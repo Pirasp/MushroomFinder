@@ -1,4 +1,4 @@
-package de.othr.im.entities;
+package de.mushroomfinder.entities;
 
 import javax.persistence.*;
 
@@ -15,7 +15,7 @@ public class Mushroom {
 
     @Lob
     @Column(name = "picture")
-    private byte[] picture;
+    private String picture;
 
     @Column(name = "description")
     private String description;
@@ -37,11 +37,11 @@ public class Mushroom {
         this.name = name;
     }
 
-    public byte[] getPicture() {
+    public String getPicture() {
         return picture;
     }
 
-    public void setPicture(byte[] picture) {
+    public void setPicture(String picture){
         this.picture = picture;
     }
 

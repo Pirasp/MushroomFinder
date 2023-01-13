@@ -1,7 +1,7 @@
-package de.othr.im.service;
+package de.mushroomfinder.service;
 
-import de.othr.im.entities.Mushroom;
-import de.othr.im.repository.MushroomRepository;
+import de.mushroomfinder.entities.Mushroom;
+import de.mushroomfinder.repository.MushroomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
