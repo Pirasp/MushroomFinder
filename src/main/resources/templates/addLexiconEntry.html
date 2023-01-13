@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Mushroom</title>
+</head>
+<body>
+<h1>Add Mushroom</h1>
+<form action="#" th:action="@{/lexicon/add}" th:object="${mushroom}" method="post" enctype="multipart/form-data">
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td><input type="text" th:field="*{name}"/></td>
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td><textarea th:field="*{description}"></textarea></td>
+        </tr>
+        <tr>
+            <td>Picture:</td>
+            <td><input type="file" name="picture" accept="image/png, image/jpeg" th:field="*{picture}"/></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Save"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

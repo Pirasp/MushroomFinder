@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mushroom Lexicon</title>
+</head>
+<body>
+<h1>Mushroom Lexicon</h1>
+<form action="#" th:action="@{/lexicon}" method="get">
+    <label for="searchTerm">Search Term:</label>
+    <input type="text" id="searchTerm" name="searchTerm" th:value="${searchTerm}">
+    <input type="submit" value="Search">
+</form>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Picture</th>
+    </tr>
+    <tr th:each="mushroom : ${mushrooms}">
+        <td th:text="${mushroom.name}"></td>
+        <td th:text="${mushroom.description}"></td>
+        <td><img th:src="@{/pictures/} + ${mushroom.picture}" alt="mushroom picture" style="height: 150px"></td>
+    </tr>
+</table>
+</body>
+</html>
