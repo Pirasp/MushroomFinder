@@ -25,27 +25,24 @@
         })
     });
 
-    var markerSource = map.getLayers().getArray()[1].getSource();
-    var marker;
-    map.on('click', function(event) {
-        var coordinates = event.coordinate;
-        if (!marker) {
-            marker = new ol.Feature({
-                geometry: new ol.geom.Point(coordinates),
-                name: 'Marker'
+    fetch("/markers")
+        .then(response => response.json())
+        .then(markers => {
+            var vectorSource = new ol.source.Vector(); // Create a vector source
+            for (var i = 0; i < markers.length; i++) {
+                var marker = markers[i];
+                var lonLat = [marker.longitude, marker.latitude];
+                var point = new ol.geom.Point(ol.proj.fromLonLat(lonLat)); // Create a point feature
+                var feature = new ol.Feature({
+                    geometry: point
+                });
+                vectorSource.addFeature(feature); // Add the feature to the vector source
+            }
+            var vectorLayer = new ol.layer.Vector({
+                source: vectorSource
             });
-            var style = new ol.style.Style({
-                image: new ol.style.Icon({
-                    src: 'marker.png'
-                })
-            });
-            marker.setStyle(style);
-            markerSource.addFeature(marker);
-        } else {
-            marker.getGeometry().setCoordinates(coordinates);
-        }
-        //alert(marker.getGeometry().getCoordinates());
-    });
+            map.addLayer(vectorLayer); // Add the vector layer to the map
+        });
 </script>
 </body>
 </html>
