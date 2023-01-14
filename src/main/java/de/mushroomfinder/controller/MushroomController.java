@@ -50,28 +50,29 @@ public class MushroomController {
     }
 
     @PostMapping("/lexicon/add")
-    public String addMushroom(@RequestParam("picture") MultipartFile picture,
-                              @ModelAttribute Mushroom mushroom,
+    public String addMushroom(@RequestPart("image") MultipartFile image,
+                              Mushroom mushroom,
                               RedirectAttributes redirectAttributes,
                               HttpServletRequest request) throws IOException {
 
-        String fileName = picture.getOriginalFilename();
+        String fileName = image.getOriginalFilename();
         String path = request.getServletContext().getRealPath("/");
-        File uploadDir = new File(path + "/images/");
+        File uploadDir = new File(path + "/static/images/");
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
         // Create a file object to save the uploaded file
         File uploadFile = new File(uploadDir.getPath() + File.separator + fileName);
+        System.out.println(uploadFile.toString());
         try {
             // Save the uploaded file
-            picture.transferTo(uploadFile);
+            image.transferTo(uploadFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
         // Set the file name as a redirect attribute
         redirectAttributes.addAttribute("fileName", fileName);
-
+        mushroom.setPicture(image.getOriginalFilename());
         mushroomLexiconAddService.addMushroom(mushroom);
         return "redirect:/lexicon";
     }

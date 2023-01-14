@@ -38,7 +38,7 @@ public class Mushroom {
     }
 
     public String getPicture() {
-        return picture;
+        return "/pictures/"+picture;
     }
 
     public void setPicture(String picture){

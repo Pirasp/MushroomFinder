@@ -20,7 +20,7 @@
     <tr th:each="mushroom : ${mushrooms}">
         <td th:text="${mushroom.name}"></td>
         <td th:text="${mushroom.description}"></td>
-        <td><img th:src="@{/pictures/} + ${mushroom.picture}" alt="mushroom picture" style="height: 150px"></td>
+        <td><img th:src="${mushroom.picture}" alt="mushroom picture" style="height: 150px"></td>
     </tr>
 </table>
 </body>
