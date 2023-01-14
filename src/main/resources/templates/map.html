@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="https://openlayers.org/en/v6.5.0/css/ol.css" type="text/css">
 </head>
 <body>
-<div id="map" class="map" style= "width: 512px; height: 512px" ></div>
+<H1>Mushroom Finder</H1>
+<a href="/lexicon">Lexicon</a>
+<div id="map" class="map" style= "width: 100%; height: 700px" ></div>
 <script>
     var map = new ol.Map({
         target: 'map',
@@ -20,8 +22,8 @@
             })
         ],
         view: new ol.View({
-            center: ol.proj.fromLonLat([37.41, 8.82]),
-            zoom: 4
+            center: ol.proj.fromLonLat([12.10434300, 49.02391200]),
+            zoom: 10
         })
     });
 
@@ -38,8 +40,17 @@
                 });
                 vectorSource.addFeature(feature); // Add the feature to the vector source
             }
+            var markerStyle = new ol.style.Style({
+                image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                    anchor: [0.5, 0.5],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'fraction',
+                    src: 'marker.png'
+                }))
+            });
             var vectorLayer = new ol.layer.Vector({
-                source: vectorSource
+                source: vectorSource,
+                style: markerStyle
             });
             map.addLayer(vectorLayer); // Add the vector layer to the map
         });

@@ -5,8 +5,9 @@
     <title>Mushroom Finder: Lexicon</title>
 </head>
 <body>
-<h1>Add Mushroom</h1>
-<form action="#" th:action="@{/lexicon/add}" th:object="${mushroom}" method="post" enctype="multipart/form-data">
+<h1>Edit Lexicon Entry</h1>
+
+<form th:object="${mushroom}" th:action="@{/mushrooms/edit/{id}(id=${mushroom.id})}" method="post">
     <table>
         <tr>
             <td>Name:</td>
@@ -18,7 +19,7 @@
         </tr>
         <tr>
             <td>Picture:</td>
-            <td><input type="file" name="image" accept="image/png, image/jpeg"/></td>
+            <td><input type="file" th:field="*{picture}"/></td>
         </tr>
         <tr>
             <td><input type="submit" value="Save"></td>

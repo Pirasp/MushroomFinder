@@ -1,8 +1,10 @@
 package de.mushroomfinder.controller;
 
 import de.mushroomfinder.entities.Mushroom;
+import de.mushroomfinder.repository.MushroomRepository;
 import de.mushroomfinder.service.MushroomLexiconAddService;
 import de.mushroomfinder.service.MushroomLexiconService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,9 @@ public class MushroomController {
 
     private final MushroomLexiconAddService mushroomLexiconAddService;
     private final MushroomLexiconService mushroomLexiconService;
+
+    @Autowired
+    private MushroomRepository mushroomRepository;
 
     public MushroomController(MushroomLexiconAddService mushroomLexiconAddService,
                               MushroomLexiconService mushroomLexiconService) {
@@ -75,5 +80,18 @@ public class MushroomController {
         mushroom.setPicture(image.getOriginalFilename());
         mushroomLexiconAddService.addMushroom(mushroom);
         return "redirect:/lexicon";
+    }
+
+    @GetMapping("/lexicon/modify/{id}")
+    public ModelAndView getMushroom(@PathVariable Long id) throws IllegalArgumentException{
+        Mushroom mushroom = mushroomRepository.searchById(id);
+        return new ModelAndView("modifyLexiconEntry", "mushroom", mushroom);
+    }
+
+    @PostMapping("/mushrooms/edit/{id}")
+    public String editMushroom(@PathVariable("id") long id, @ModelAttribute Mushroom mushroom, RedirectAttributes redirectAttributes, HttpServletRequest request) throws IOException {
+        mushroom.setId(id);
+        mushroomRepository.save(mushroom);
+        return "redirect:/lexicon?searchTerm="+mushroom.getName();
     }
 }
