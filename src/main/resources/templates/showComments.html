@@ -19,6 +19,12 @@
    								<div class="d-flex flex-row align-items-center">
      								<p class="small mb-0 ms-2" th:text="${comment.date}"></p>
      							</div>
+     							<div class="d-flex flex-row align-items-center">
+     								<a class="small mb-0 ms-2" th:href="@{edit/{id}(id=${comment.id})}">Edit</a>
+     							</div>
+     							<div class="d-flex flex-row align-items-center">
+     								<a class="small mb-0 ms-2" th:href="@{delete/{id}(id=${comment.id})}">Delete</a>
+     							</div>
      						</div>
             			</div>
             		</div>

@@ -24,32 +24,38 @@ public class spotsRestController {
 	public ResponseEntity<List<Spot>> findSpotsInArea(@RequestParam("lat") double lat,
 														@RequestParam("lng") double lng,
 														@RequestParam("dist") int distInKm){
-		List<Spot> allSpots = spotRepository.findAll();
-		
-		List<Spot> spotsWithin = new ArrayList<>();
-		double spotLat;
-		double spotLng;
-		double distance;
-		//Get Entries within the distance
-		for(int i = 0; i<allSpots.size(); i++) {
-
-			spotLat = allSpots.get(i).getLatitude();
-			spotLng = allSpots.get(i).getLongitude();
-		    final int R = 6371; // Radius of the earth
-
-		    double latDistance = Math.toRadians(spotLat - lat);
-		    double lonDistance = Math.toRadians(spotLng - lng);
-		    double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-		            + Math.cos(Math.toRadians(lat)) * Math.cos(Math.toRadians(spotLat))
-		            * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-		    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-		    distance = R * c;
-
-		    System.out.println("Distanz:" + distance);
-			if(distance<=distInKm) {
-				spotsWithin.add(allSpots.get(i));
+		try {
+			List<Spot> allSpots = spotRepository.findAll();
+			
+			List<Spot> spotsWithin = new ArrayList<>();
+			double spotLat;
+			double spotLng;
+			double distance;
+			//Get Entries within the distance
+			for(int i = 0; i<allSpots.size(); i++) {
+	
+				spotLat = allSpots.get(i).getLatitude();
+				spotLng = allSpots.get(i).getLongitude();
+			    final int R = 6371; // Radius of the earth
+	
+			    double latDistance = Math.toRadians(spotLat - lat);
+			    double lonDistance = Math.toRadians(spotLng - lng);
+			    double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+			            + Math.cos(Math.toRadians(lat)) * Math.cos(Math.toRadians(spotLat))
+			            * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+			    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+			    distance = R * c;
+	
+			    System.out.println("Distanz:" + distance);
+				if(distance<=distInKm) {
+					spotsWithin.add(allSpots.get(i));
+				}
 			}
+			return new ResponseEntity<>(spotsWithin, HttpStatus.OK);
+			
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<>(spotsWithin, HttpStatus.OK);
+
 	}
 }

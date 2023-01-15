@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +65,35 @@ public class CommentsAddController {
 		mv.setViewName("showComments");
 		mv.addObject("comments", comments);
 		return mv;
+	}
+	
+	@GetMapping("/comments/edit/{id}")
+	public ModelAndView commentEditForm(@PathVariable("id") Integer id) {
+		Optional<Comment> optComment = commentRepository.findById(id);
+		Comment comment = optComment.get();
+		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("editComment");
+		mv.addObject("comment", comment);
+		return mv;
+	}
+	
+	@PostMapping("/comments/edit/save/{id}")
+	public String saveCommentEdit(@PathVariable("id") Integer id, @ModelAttribute("comment") Comment comment) {
+		Optional<Comment> optComment = commentRepository.findById(id);
+		Comment c = optComment.get();
+		c.setMessage(comment.getMessage());
+		commentRepository.save(c);
+		return "redirect:/comments/"+c.getSpot().getId();
+	}
+	
+	@GetMapping("/comments/delete/{id}")
+	public String deleteComment(@PathVariable("id") Integer id) {
+		Optional<Comment> optComment = commentRepository.findById(id);
+		Comment comment = optComment.get();
+		Integer spotId = comment.getSpot().getId();
+		commentRepository.delete(comment);
+		return "redirect:/comments/"+spotId;
 	}
 	
 }
