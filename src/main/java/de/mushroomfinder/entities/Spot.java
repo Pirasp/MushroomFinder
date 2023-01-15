@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "spots")
 public class Spot {
@@ -31,6 +33,7 @@ public class Spot {
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
+
 	@OneToMany(mappedBy = "spot", cascade = CascadeType.ALL)
 	List <Comment> comments;
     

@@ -14,6 +14,8 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 @Entity
@@ -26,6 +28,8 @@ public class Comment {
     String message;
     int votes;
     
+    //avoid infinite loop when returning spots as json in the spotsRestController
+    @JsonIgnore
 	@ManyToOne
     @JoinColumn(name="idspot")
     Spot spot;
