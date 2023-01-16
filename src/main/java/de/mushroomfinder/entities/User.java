@@ -3,15 +3,19 @@ package de.mushroomfinder.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 
-
+@Entity
+@Table(name = "user")
 public class User {
 	
 	@Id
@@ -23,6 +27,8 @@ public class User {
 	private String login;
 	private Integer active;
 	
+
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 			name="userauthority",
@@ -79,6 +85,7 @@ public class User {
 		this.myAuthorities = myAuthorities;
 	}
 	
+
 	
 	
 }

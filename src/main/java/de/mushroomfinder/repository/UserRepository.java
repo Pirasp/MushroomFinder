@@ -17,8 +17,10 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 
 	//Page<User> findAll(Pageable pageable);
 
-	@Query("select u from User u where u.active=1 and ((u.name LIKE '%'||:name||'%') or (:name IS NULL) ) order by u.login asc")
-	Page<User> findAllByNameWithPagination(String name, Pageable pageable);
-		
+	/*
+	 * @Query("select u from User u where u.active=1 and ((u.name LIKE '%'||:name||'%') or (:name IS NULL) ) order by u.login asc"
+	 * )
+	 Page<User> findAllByNameWithPagination(String name, Pageable pageable);
+	*/	
 }
  
