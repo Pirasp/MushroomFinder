@@ -1,6 +1,6 @@
 package de.mushroomfinder.controller;
 
-import de.mushroomfinder.entities.Mushroom;
+import de.mushroomfinder.model.Mushroom;
 import de.mushroomfinder.service.MushroomLexiconAddService;
 import de.mushroomfinder.service.MushroomLexiconService;
 import org.springframework.http.MediaType;

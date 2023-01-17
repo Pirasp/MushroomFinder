@@ -1,6 +1,6 @@
 package de.mushroomfinder.service;
 
-import de.mushroomfinder.entities.Mushroom;
+import de.mushroomfinder.model.Mushroom;
 import de.mushroomfinder.repository.MushroomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
