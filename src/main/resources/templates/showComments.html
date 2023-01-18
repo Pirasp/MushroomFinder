@@ -18,12 +18,21 @@
 							<div class="d-flex justify-content-between">
    								<div class="d-flex flex-row align-items-center">
      								<p class="small mb-0 ms-2" th:text="${comment.date}"></p>
+     								<p>Votes:</p>
+     								<p th:text="*{comment.votes}"></p>
+	            
      							</div>
      							<div class="d-flex flex-row align-items-center">
      								<a class="small mb-0 ms-2" th:href="@{edit/{id}(id=${comment.id})}">Edit</a>
      							</div>
      							<div class="d-flex flex-row align-items-center">
      								<a class="small mb-0 ms-2" th:href="@{delete/{id}(id=${comment.id})}">Delete</a>
+     							</div>
+     							<div class="d-flex flex-row align-items-center">
+     								<a class="small mb-0 ms-2" th:href="@{upvote/{id}(id=${comment.id})}">Upvote</a>
+     							</div>
+     							<div class="d-flex flex-row align-items-center">
+     								<a class="small mb-0 ms-2" th:href="@{downvote/{id}(id=${comment.id})}">Downvote</a>
      							</div>
      						</div>
             			</div>

@@ -4,14 +4,58 @@
 <meta charset="ISO-8859-1">
 <title>Modify your filter</title>
 </head>
-<body>
+<body onload="selectMushrooms()">
 	<form action="#" th:action="@{save}" th:object="${filter}" method="post" enctype="multipart/form-data">
 
 		<h1>Distance:</h1>
 		<input type="range" th:field="*{distance}" min="1" max="100" step="0.5" oninput="this.nextElementSibling.innerHTML = this.value">
 		<p th:text="${filter.distance}"></p>
-		<input type="submit" value="Save">
+			<h2>Filter by mushrooms:</h2>
+<!-- 		<div id="div">
+			<div th:each="mushroom : ${filter.mushrooms}" class="selectedMushrooms">
+				<p th:text="${mushroom.name}"></p>
+			<div style="visibility:hidden" th:text="${mushroom.id}"></div>
+		</div>
+		</div> -->
 
+		<select name="params[]" th:object="${mushrooms}" multiple>
+			<option th:each="mushroom : ${mushrooms}" th:text="${mushroom.name}" th:value="${mushroom.id}" th:id="${mushroom.id}" class="mushroomList"></option>
+		</select>
+		
+		<a href="/filter/delete">Delete</a>
+		<input type="submit" value="Save">
+		<script th:inline="javascript">
+			function selectMushrooms(){
+			
+				
+				/*<![CDATA[*/
+
+			    var mushroomsInFilter = /*[[${filter.mushrooms}]]*/ 'default';
+			    console.log(mushroomsInFilter);
+
+			/*]]>*/
+				for(let i = 0; i<mushroomsInFilter.length; i++){
+					document.getElementById(mushroomsInFilter[i].id).selected = 'selected';
+					
+				}				
+			}
+/* 			function changeSelect(){
+				var div = document.getElementById("div");
+				var divNew = document.createElement("div");
+				var p = document.createElement("p");
+				list.innerHTML = '';
+				var selectionList = document.getElementsByClassName("mushroomList");
+				for(let j = 0; j<selectionList.length; j++){
+					
+					if(selectionList[j].selected){
+						divNew.innerHTML = selectionList[j].innerHTML;
+						divNew.id = selectionList[j].id;
+						div.appendChild(divNew);
+					}
+				}
+			} */
+
+		</script>
 	</form>
 </body>
 </html>

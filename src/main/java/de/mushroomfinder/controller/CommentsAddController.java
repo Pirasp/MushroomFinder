@@ -1,8 +1,10 @@
 package de.mushroomfinder.controller;
 
+import java.security.Principal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -19,9 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.mushroomfinder.entities.Comment;
+import de.mushroomfinder.entities.CommentVote;
 import de.mushroomfinder.entities.Spot;
+import de.mushroomfinder.entities.User;
 import de.mushroomfinder.repository.CommentRepository;
+import de.mushroomfinder.repository.CommentVoteRepository;
 import de.mushroomfinder.repository.SpotRepository;
+import de.mushroomfinder.repository.UserRepository;
 
 @Controller
 public class CommentsAddController {
@@ -31,6 +37,12 @@ public class CommentsAddController {
 	
 	@Autowired
 	SpotRepository spotRepository;
+	
+	@Autowired
+	CommentVoteRepository commentVoteRepository;
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	@GetMapping("comments/add/{id}")
 	public ModelAndView showCommentForm(@PathVariable("id") Integer id) {
@@ -61,9 +73,10 @@ public class CommentsAddController {
 		Optional<Spot> spotOpt = spotRepository.findById(id);
 		Spot spot = spotOpt.get();
 		List<Comment> comments = spot.getComments();
-		
+
 		mv.setViewName("showComments");
 		mv.addObject("comments", comments);
+		
 		return mv;
 	}
 	
@@ -93,6 +106,68 @@ public class CommentsAddController {
 		Comment comment = optComment.get();
 		Integer spotId = comment.getSpot().getId();
 		commentRepository.delete(comment);
+		return "redirect:/comments/"+spotId;
+	}
+	
+	@GetMapping("/comments/upvote/{id}")
+	public String upvoteComment(@PathVariable("id") Integer cId, Principal principal) {
+		Optional<User> oLoggedUser = userRepository.findUserByLogin(principal.getName());
+		
+		Optional<Comment> optComment = commentRepository.findById(cId);
+		Comment comment = optComment.get();
+		Integer spotId = comment.getSpot().getId();
+		
+		Optional<CommentVote> optCommentVote = commentVoteRepository.findVotesByUserAndCommentId(oLoggedUser.get().getId(), cId);
+	
+		if(optCommentVote.isPresent()) {
+			if(optCommentVote.get().getVote() == 1) {
+				optCommentVote.get().setVote(0);
+			}else {
+				optCommentVote.get().setVote(optCommentVote.get().getVote()+1);
+			}
+			
+		}else {
+			CommentVote newCommentVote = new CommentVote();
+			newCommentVote.setUser(oLoggedUser.get());
+			newCommentVote.setVote(1);
+			newCommentVote.setComment(comment);
+			List<CommentVote> newCommentVotes = new ArrayList<>();
+			newCommentVotes.add(newCommentVote);
+			comment.setCommentVotes(newCommentVotes);
+		}
+		commentRepository.save(comment);
+
+		return "redirect:/comments/"+spotId;
+	}
+	
+	@GetMapping("/comments/downvote/{id}")
+	public String downvoteComment(@PathVariable("id") Integer cId, Principal principal) {
+		Optional<User> oLoggedUser = userRepository.findUserByLogin(principal.getName());
+		
+		Optional<Comment> optComment = commentRepository.findById(cId);
+		Comment comment = optComment.get();
+		Integer spotId = comment.getSpot().getId();
+		
+		Optional<CommentVote> optCommentVote = commentVoteRepository.findVotesByUserAndCommentId(oLoggedUser.get().getId(), cId);
+	
+		if(optCommentVote.isPresent()) {
+			if(optCommentVote.get().getVote() == -1) {
+				optCommentVote.get().setVote(0);
+			}else {
+				optCommentVote.get().setVote(optCommentVote.get().getVote()-1);
+			}
+			
+		}else {
+			CommentVote newCommentVote = new CommentVote();
+			newCommentVote.setUser(oLoggedUser.get());
+			newCommentVote.setVote(-1);
+			newCommentVote.setComment(comment);
+			List<CommentVote> newCommentVotes = new ArrayList<>();
+			newCommentVotes.add(newCommentVote);
+			comment.setCommentVotes(newCommentVotes);
+		}
+		commentRepository.save(comment);
+
 		return "redirect:/comments/"+spotId;
 	}
 	
