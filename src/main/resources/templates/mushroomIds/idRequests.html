@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mushroom List</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>User ID</th>
+        <th>Picture</th>
+        <th>Location</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Mushroom ID</th>
+    </tr>
+    <tr th:each="mushroom : ${mushrooms}">
+        <td th:text="${mushroom.id}"></td>
+        <td th:text="${mushroom.userid}"></td>
+        <td th:text="${mushroom.picture}"></td>
+        <td th:text="${mushroom.location}"></td>
+        <td th:text="${mushroom.description}"></td>
+        <td th:text="${mushroom.status}"></td>
+        <td th:text="${mushroom.mushroomid}"></td>
+    </tr>
+</table>
+<a href="/mushroomIds/new">New Id-Request</a>
+</body>
+</html>

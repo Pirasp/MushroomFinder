@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New Mushroom</title>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data" th:object="${mushroomId}">
+    <label>User ID:</label>
+    <input type="text" th:field="*{userid}"/>
+    <br>
+    <label>Picture:</label>
+    <input type="file" th:field="*{picture}"/>
+    <br>
+    <label>Location:</label>
+    <input type="text" th:field="*{location}"/>
+    <br>
+    <label>Description:</label>
+    <input type="text" th:field="*{description}"/>
+    <br>
+    <input type="submit" value="Save"/>
+</form>
+<a href="/mushroomsIds/idRequests">Back</a>
+</body>
+</html>
