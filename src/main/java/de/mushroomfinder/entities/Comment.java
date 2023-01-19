@@ -43,7 +43,16 @@ public class Comment {
 	@OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
 	List <CommentVote> commentVotes;
 	
+	@ManyToOne
+	@JoinColumn(name="userid")
+	User user;
 
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 	public List<CommentVote> getCommentVotes() {
 		return commentVotes;
 	}

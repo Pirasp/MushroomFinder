@@ -49,7 +49,7 @@ public class FilterController {
 			filter = new Filter();
 		}
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("addEditFilter");
+		mv.setViewName("filter/addEditFilter");
 		mv.addObject("filter", filter);
 		mv.addObject("mushrooms", mushrooms);
 		return mv;

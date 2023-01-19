@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="ISO-8859-1">
-<title>Add a comment</title>
-</head>
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>Add a comment</title>
+	</head>
 <body>
-	<form action="#" th:object="${comment}" th:action="@{save/{id}(id=${comment.id})}" method="post" enctype="multipart/form-data">
+	<div th:insert="layout/navbar::navbar">
+	</div>
+	<form action="#" th:action="@{save}" th:object="${commentForm}" method="post" enctype="multipart/form-data">
 	    <table>
 	        <tr>
 	            <td>Description:</td>
@@ -15,6 +17,9 @@
 	            <td><input type="submit" value="Save"></td>
 	        </tr>
 	    </table>
+	            <input type="hidden" name="spot.id" th:field="*{spot.id}"/>
 	</form>
+
+	
 </body>
 </html>

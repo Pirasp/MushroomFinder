@@ -45,12 +45,13 @@ public class CommentsAddController {
 	UserRepository userRepository;
 	
 	@GetMapping("comments/add/{id}")
-	public ModelAndView showCommentForm(@PathVariable("id") Integer id) {
+	public ModelAndView showCommentForm(@PathVariable("id") Integer id, Principal principal) {
 		ModelAndView mv = new ModelAndView();
 		Comment comment = new Comment();
 
 		Optional<Spot> spotOpt = spotRepository.findById(id);
 		comment.setSpot(spotOpt.get());
+				
 		mv.setViewName("addComment");
 		mv.addObject("commentForm", comment);
 		return mv;
@@ -58,35 +59,55 @@ public class CommentsAddController {
 	}
 	
 	@PostMapping("comments/add/save")
-	public String saveComment(@ModelAttribute("commentForm") Comment commentForm) {
+	public String saveComment(@ModelAttribute("commentForm") Comment commentForm, Principal principal) {
 		Optional<Spot> spotOpt = spotRepository.findById(commentForm.getSpot().getId());
 		commentForm.setSpot(spotOpt.get());
 		commentForm.setDate(LocalDate.now());
+		
+		Optional<User> oLoggedUser = userRepository.findUserByLogin(principal.getName());
+		if(oLoggedUser.isPresent() == false) {
+			System.out.println("Kein User eingeloggt");
+		}
+		commentForm.setUser(oLoggedUser.get());
 		Comment comment = commentRepository.save(commentForm);
 		System.out.println("Kommentar mit der ID: " + comment.getId() + " gespeichert. Comment Spot: " + comment.getSpot());
 		return("map");
 	}
 	
 	@RequestMapping("/comments/{id}")
-	public ModelAndView showComments(@PathVariable("id") Integer id) {
+	public ModelAndView showComments(@PathVariable("id") Integer id, Principal principal) {
 		ModelAndView mv = new ModelAndView();
 		Optional<Spot> spotOpt = spotRepository.findById(id);
+		if(spotOpt.isPresent() == false) {
+			System.out.println("Spot " + id + " existiert nicht!");
+			mv.setViewName("map");
+			return mv;
+		}
 		Spot spot = spotOpt.get();
 		List<Comment> comments = spot.getComments();
 
-		mv.setViewName("showComments");
+		mv.setViewName("comment/showComments");
 		mv.addObject("comments", comments);
+		mv.addObject("userName", principal.getName());
 		
 		return mv;
 	}
 	
 	@GetMapping("/comments/edit/{id}")
-	public ModelAndView commentEditForm(@PathVariable("id") Integer id) {
+	public ModelAndView commentEditForm(@PathVariable("id") Integer id, Principal principal) {
 		Optional<Comment> optComment = commentRepository.findById(id);
 		Comment comment = optComment.get();
 		
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("editComment");
+		
+		Optional<User> oLoggedUser = userRepository.findUserByLogin(principal.getName());
+		
+		if(comment.getUser().getId() != oLoggedUser.get().getId()) {
+			mv.setViewName("map");
+			return mv;
+		}
+		
+		mv.setViewName("comment/editComment");
 		mv.addObject("comment", comment);
 		return mv;
 	}

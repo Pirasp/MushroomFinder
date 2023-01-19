@@ -2,9 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
 <title>Modify your filter</title>
 </head>
 <body onload="selectMushrooms()">
+	<div th:insert="layout/navbar::navbar">
+	</div>
+	
 	<form action="#" th:action="@{save}" th:object="${filter}" method="post" enctype="multipart/form-data">
 
 		<h1>Distance:</h1>
@@ -18,7 +27,7 @@
 		</div>
 		</div> -->
 
-		<select name="params[]" th:object="${mushrooms}" multiple>
+		<select name="params[]" th:object="${mushrooms}" class="selectpicker" multiple data-live-search="true">
 			<option th:each="mushroom : ${mushrooms}" th:text="${mushroom.name}" th:value="${mushroom.id}" th:id="${mushroom.id}" class="mushroomList"></option>
 		</select>
 		
@@ -26,7 +35,7 @@
 		<input type="submit" value="Save">
 		<script th:inline="javascript">
 			function selectMushrooms(){
-			
+				
 				
 				/*<![CDATA[*/
 
@@ -37,8 +46,10 @@
 				for(let i = 0; i<mushroomsInFilter.length; i++){
 					document.getElementById(mushroomsInFilter[i].id).selected = 'selected';
 					
-				}				
+				}
+				
 			}
+			$('select').selectpicker();
 /* 			function changeSelect(){
 				var div = document.getElementById("div");
 				var divNew = document.createElement("div");
@@ -57,5 +68,6 @@
 
 		</script>
 	</form>
+
 </body>
 </html>
