@@ -1,7 +1,7 @@
 package de.mushroomfinder.controller;
 
 import de.mushroomfinder.entities.Mushroom;
-import de.mushroomfinder.repository.MushroomRepository;
+import de.mushroomfinder.repository.LexiconRepository;
 import de.mushroomfinder.service.MushroomLexiconAddService;
 import de.mushroomfinder.service.MushroomLexiconService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class MushroomController {
     private final MushroomLexiconService mushroomLexiconService;
 
     @Autowired
-    private MushroomRepository mushroomRepository;
+    private LexiconRepository mushroomRepository;
 
     public MushroomController(MushroomLexiconAddService mushroomLexiconAddService,
                               MushroomLexiconService mushroomLexiconService) {

@@ -2,24 +2,25 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>New Mushroom</title>
+    <title>Mushroom Finder: Id Request</title>
 </head>
 <body>
-<form method="post" enctype="multipart/form-data" th:object="${mushroomId}">
+<form action="#" enctype="multipart/form-data" method="post" th:action="@{/mushroomIds/add}" th:object="${mushroomId}">
     <label>User ID:</label>
-    <input type="text" th:field="*{userid}"/>
+    <input type="text" th:field="*{userId}"/>
     <br>
     <label>Picture:</label>
-    <input type="file" th:field="*{picture}"/>
+    <input type="file" name="picture" th:field="*{picture}"/>
+    Max 60KB!
     <br>
     <label>Location:</label>
     <input type="text" th:field="*{location}"/>
     <br>
     <label>Description:</label>
-    <input type="text" th:field="*{description}"/>
+    <input th:field="*{description}" type="text"/>
     <br>
     <input type="submit" value="Save"/>
 </form>
-<a href="/mushroomsIds/idRequests">Back</a>
+<a href="/mushroomIds">Back</a>
 </body>
 </html>
