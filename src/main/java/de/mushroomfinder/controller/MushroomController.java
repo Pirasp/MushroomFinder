@@ -1,7 +1,6 @@
 package de.mushroomfinder.controller;
 
 import de.mushroomfinder.entities.Mushroom;
-import de.mushroomfinder.entities.MushroomId;
 import de.mushroomfinder.repository.LexiconRepository;
 import de.mushroomfinder.service.MushroomLexiconAddService;
 import de.mushroomfinder.service.MushroomLexiconService;
@@ -18,10 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 @Controller
@@ -31,7 +27,7 @@ public class MushroomController {
     private final MushroomLexiconService mushroomLexiconService;
 
     @Autowired
-    private LexiconRepository mushroomRepository;
+    private LexiconRepository lexiconRepository;
 
     public MushroomController(MushroomLexiconAddService mushroomLexiconAddService,
                               MushroomLexiconService mushroomLexiconService) {
@@ -42,6 +38,10 @@ public class MushroomController {
 
     @GetMapping("/lexicon")
     public ModelAndView lexicon(@RequestParam(value = "searchTerm", defaultValue = " ") String searchTerm){
+        if(searchTerm.equals(" ")){
+            List<Mushroom> mushrooms = lexiconRepository.findAll();
+            return new ModelAndView("lexicon", "mushrooms", mushrooms);
+        }
 
         List<Mushroom> mushrooms = mushroomLexiconService.searchMushrooms(searchTerm);
         return new ModelAndView("lexicon", "mushrooms", mushrooms);
@@ -73,7 +73,7 @@ public class MushroomController {
         } catch (IOException e) {
             return "redirect:/lexicon/add/errorPictureSize";
         }
-        mushroomRepository.save(mushroom);
+        lexiconRepository.save(mushroom);
         return "redirect:/lexicon";
     }
 
@@ -94,7 +94,7 @@ public class MushroomController {
             return "redirect:/lexicon/add/errorPictureSize";
         }
         mushroom.setId(id);
-        mushroomRepository.save(mushroom);
+        lexiconRepository.save(mushroom);
         return "redirect:/lexicon?searchTerm="+mushroom.getName();
     }
 
@@ -105,7 +105,7 @@ public class MushroomController {
 
     @GetMapping("/lexicon/modify/{id}")
     public ModelAndView getMushroom(@PathVariable Long id) throws IllegalArgumentException{
-        Mushroom mushroom = mushroomRepository.searchById(id);
+        Mushroom mushroom = lexiconRepository.searchById(id);
         return new ModelAndView("modifyLexiconEntry", "mushroom", mushroom);
     }
 
