@@ -9,11 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
@@ -74,6 +77,27 @@ public class MushroomController {
         return "redirect:/lexicon";
     }
 
+    @PostMapping("/mushrooms/edit/{id}")
+    public String editMushroom(@PathVariable("id") long id,
+                               @ModelAttribute Mushroom mushroom,
+                               @RequestParam("picture")MultipartFile picture,
+                               RedirectAttributes redirectAttributes,
+                               HttpServletRequest request) throws IOException {
+        try {
+            byte [] tmp = picture.getBytes();
+
+            if(tmp.length > 64000){
+                throw new IOException();
+            }
+            mushroom.setPicture(tmp);
+        } catch (IOException e) {
+            return "redirect:/lexicon/add/errorPictureSize";
+        }
+        mushroom.setId(id);
+        mushroomRepository.save(mushroom);
+        return "redirect:/lexicon?searchTerm="+mushroom.getName();
+    }
+
     @RequestMapping("/lexicon/add/errorPictureSize")
     public String errorPicsize(){
         return "/errorPictureSize";
@@ -85,10 +109,11 @@ public class MushroomController {
         return new ModelAndView("modifyLexiconEntry", "mushroom", mushroom);
     }
 
-    @PostMapping("/mushrooms/edit/{id}")
-    public String editMushroom(@PathVariable("id") long id, @ModelAttribute Mushroom mushroom, RedirectAttributes redirectAttributes, HttpServletRequest request) throws IOException {
-        mushroom.setId(id);
-        mushroomRepository.save(mushroom);
-        return "redirect:/lexicon?searchTerm="+mushroom.getName();
+    //this is needed for Spring to be able to use its Multipartfile to byte method, without it spring dies :D
+    @InitBinder
+    protected void initBinder(HttpServletRequest request,
+                              ServletRequestDataBinder binder) throws ServletException {
+        binder.registerCustomEditor(byte[].class,
+                new ByteArrayMultipartFileEditor());
     }
 }
