@@ -1,6 +1,7 @@
 package de.mushroomfinder.controller;
 
 import de.mushroomfinder.entities.Mushroom;
+import de.mushroomfinder.entities.MushroomId;
 import de.mushroomfinder.repository.LexiconRepository;
 import de.mushroomfinder.service.MushroomLexiconAddService;
 import de.mushroomfinder.service.MushroomLexiconService;
@@ -16,6 +17,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Controller
@@ -42,7 +45,7 @@ public class MushroomController {
     }
 
     @GetMapping(value = "/mushrooms/picture/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public @ResponseBody String getMushroomPicture(@PathVariable("id") Long id) {
+    public @ResponseBody byte[] getMushroomPicture(@PathVariable("id") Long id) {
 
         Mushroom mushroom = mushroomLexiconService.getMushroomById(id);
         return mushroom.getPicture();
@@ -55,31 +58,25 @@ public class MushroomController {
     }
 
     @PostMapping("/lexicon/add")
-    public String addMushroom(@RequestPart("image") MultipartFile image,
-                              Mushroom mushroom,
-                              RedirectAttributes redirectAttributes,
-                              HttpServletRequest request) throws IOException {
-
-        String fileName = image.getOriginalFilename();
-        String path = request.getServletContext().getRealPath("/");
-        File uploadDir = new File(path + "/static/images/");
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
-        }
-        // Create a file object to save the uploaded file
-        File uploadFile = new File(uploadDir.getPath() + File.separator + fileName);
-        System.out.println(uploadFile.toString());
+    public String create(@ModelAttribute Mushroom mushroom,
+                         @RequestParam("picture")MultipartFile picture){
         try {
-            // Save the uploaded file
-            image.transferTo(uploadFile);
+            byte [] tmp = picture.getBytes();
+
+            if(tmp.length > 64000){
+                throw new IOException();
+            }
+            mushroom.setPicture(tmp);
         } catch (IOException e) {
-            e.printStackTrace();
+            return "redirect:/lexicon/add/errorPictureSize";
         }
-        // Set the file name as a redirect attribute
-        redirectAttributes.addAttribute("fileName", fileName);
-        mushroom.setPicture(image.getOriginalFilename());
-        mushroomLexiconAddService.addMushroom(mushroom);
+        mushroomRepository.save(mushroom);
         return "redirect:/lexicon";
+    }
+
+    @RequestMapping("/lexicon/add/errorPictureSize")
+    public String errorPicsize(){
+        return "/errorPictureSize";
     }
 
     @GetMapping("/lexicon/modify/{id}")

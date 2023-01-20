@@ -21,7 +21,7 @@
     <tr th:each="mushroom : ${mushrooms}">
         <td th:text="${mushroom.name}"></td>
         <td th:text="${mushroom.description}"></td>
-        <td><img th:src="${mushroom.picture}" alt="mushroom picture" style="height: 150px"></td>
+        <td><img th:src="${mushroom.picture}" alt="no picture available" style="height: 150px"></td>
         <td><a th:href="@{/lexicon/modify/{id}(id=${mushroom.id})}">Edit</a></td>
     </tr>
 </table>

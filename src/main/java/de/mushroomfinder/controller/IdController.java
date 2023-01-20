@@ -26,8 +26,6 @@ public class IdController {
     private final MushroomIdAddService mushroomIdAddService;
     private final MushroomIdService mushroomIdService;
 
-
-
     public IdController(IdRepository mushroomRepository, MushroomIdAddService mushroomIdAddService, MushroomIdService mushroomIdService) {
         this.mushroomRepository = mushroomRepository;
         this.mushroomIdAddService = mushroomIdAddService;
