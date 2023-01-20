@@ -60,9 +60,9 @@ public class UserService implements UserDetailsService{
 
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
-    @Override
+/*    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // TODO Auto-generated method stub
         Optional<User> oUser= userRepository.findUserByLogin(username);
@@ -73,8 +73,15 @@ public class UserService implements UserDetailsService{
 
     public void addUser(User user){
         userRepository.save(user);
+    }*/
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return new MyUserDetails(user);
     }
-
 
 
 }

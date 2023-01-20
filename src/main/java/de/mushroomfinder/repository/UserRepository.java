@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import de.mushroomfinder.model.User;
 
 
-@Repository
+/*@Repository
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
 
@@ -24,4 +24,9 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long> {
     @Query("select u from User u where u.active=1 and ((u.name LIKE '%'||:name||'%') or (:name IS NULL) ) order by u.login asc")
     Page<User> findAllByNameWithPagination(String name, Pageable pageable);
 
+}*/
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    @Query("SELECT u FROM User u WHERE u.email = ?1")
+    public User findByEmail(String email);
 }
