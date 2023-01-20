@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MapController {
 	@RequestMapping("/")
 	public String start(){
-		return"map";
+		return"addmap";
 	}
 	
-	@RequestMapping("/map")
+	@RequestMapping("/addmap")
 	public String showContact() {
 				
-		return "map";
+		return "addmap";
 	}
 }
