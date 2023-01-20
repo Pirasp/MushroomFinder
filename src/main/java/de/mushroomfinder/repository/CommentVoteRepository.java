@@ -17,5 +17,5 @@ public interface CommentVoteRepository extends JpaRepository<CommentVote, Long> 
 	 */
 	
 	@Query("select cv from CommentVote cv where cv.user.id =:userid and cv.comment.id=:commentid")
-	Optional<CommentVote> findVotesByUserAndCommentId(Integer userid, Integer commentid);
+	Optional<CommentVote> findVotesByUserAndCommentId(Long userid, Long commentid);
 }

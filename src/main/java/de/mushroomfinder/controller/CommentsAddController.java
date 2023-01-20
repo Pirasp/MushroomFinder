@@ -94,7 +94,7 @@ public class CommentsAddController {
 	}
 	
 	@GetMapping("/comments/edit/{id}")
-	public ModelAndView commentEditForm(@PathVariable("id") Integer id, Principal principal) {
+	public ModelAndView commentEditForm(@PathVariable("id") Long id, Principal principal) {
 		Optional<Comment> optComment = commentRepository.findById(id);
 		Comment comment = optComment.get();
 		
@@ -113,7 +113,7 @@ public class CommentsAddController {
 	}
 	
 	@PostMapping("/comments/edit/save/{id}")
-	public String saveCommentEdit(@PathVariable("id") Integer id, @ModelAttribute("comment") Comment comment) {
+	public String saveCommentEdit(@PathVariable("id") Long id, @ModelAttribute("comment") Comment comment) {
 		Optional<Comment> optComment = commentRepository.findById(id);
 		Comment c = optComment.get();
 		c.setMessage(comment.getMessage());
@@ -122,7 +122,7 @@ public class CommentsAddController {
 	}
 	
 	@GetMapping("/comments/delete/{id}")
-	public String deleteComment(@PathVariable("id") Integer id) {
+	public String deleteComment(@PathVariable("id") Long id) {
 		Optional<Comment> optComment = commentRepository.findById(id);
 		Comment comment = optComment.get();
 		Integer spotId = comment.getSpot().getId();
@@ -131,7 +131,7 @@ public class CommentsAddController {
 	}
 	
 	@GetMapping("/comments/upvote/{id}")
-	public String upvoteComment(@PathVariable("id") Integer cId, Principal principal) {
+	public String upvoteComment(@PathVariable("id") Long cId, Principal principal) {
 		Optional<User> oLoggedUser = userRepository.findUserByLogin(principal.getName());
 		
 		Optional<Comment> optComment = commentRepository.findById(cId);
@@ -162,7 +162,7 @@ public class CommentsAddController {
 	}
 	
 	@GetMapping("/comments/downvote/{id}")
-	public String downvoteComment(@PathVariable("id") Integer cId, Principal principal) {
+	public String downvoteComment(@PathVariable("id") Long cId, Principal principal) {
 		Optional<User> oLoggedUser = userRepository.findUserByLogin(principal.getName());
 		
 		Optional<Comment> optComment = commentRepository.findById(cId);

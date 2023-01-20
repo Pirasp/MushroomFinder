@@ -19,7 +19,7 @@ import de.mushroomfinder.entities.Filter;
 import de.mushroomfinder.entities.Mushroom;
 import de.mushroomfinder.entities.User;
 import de.mushroomfinder.repository.FilterRepository;
-import de.mushroomfinder.repository.MushroomRepository;
+import de.mushroomfinder.repository.LexiconRepository;
 import de.mushroomfinder.repository.UserRepository;
 
 @Controller
@@ -28,7 +28,7 @@ public class FilterController {
 	FilterRepository filterRepository;
 	
 	@Autowired
-	MushroomRepository mushroomRepository;
+	LexiconRepository mushroomRepository;
 	
 	@Autowired
 	UserRepository userRepository;
@@ -37,7 +37,7 @@ public class FilterController {
 	public ModelAndView addEditFilter(Principal principal) {
 		List<Mushroom> mushrooms = mushroomRepository.findAll();
 		Optional<User> oLoggedUser = userRepository.findUserByLogin(principal.getName());
-		Integer id = oLoggedUser.get().getId();
+		Long id = oLoggedUser.get().getId();
 		System.out.println("aktuelle Userid:" + id);
 		Optional<Filter> optFilter = filterRepository.findFilterByIdUser(id);
 		Filter filter;

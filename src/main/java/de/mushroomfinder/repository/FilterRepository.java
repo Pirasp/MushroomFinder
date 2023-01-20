@@ -13,5 +13,5 @@ import de.mushroomfinder.entities.Filter;
 public interface FilterRepository extends JpaRepository<Filter, Integer>{
 	
 	@Query("select f from Filter f where f.user.id=:iduser")
-	Optional<Filter> findFilterByIdUser(Integer iduser); 
+	Optional<Filter> findFilterByIdUser(Long iduser);
 }

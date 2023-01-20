@@ -1,32 +1,35 @@
 package de.mushroomfinder.entities;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "user")
 public class User {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
+	private Long id;
+	@Email(message = "Please, inform a valid E-Mail!")
 	private String email;
+	@Size(min = 6, message = "Password must contain at least 6 characters!")
 	private String password;
+	@Size(min = 4, message = "Login must contain at least 4 characters!")
 	private String login;
 	private Integer active;
-	
+	@Size(min = 4, message = "Name must contain at least 4 characters!")
+	private String name;
+
+	@Transient
+	@Size(min = 6, message = "New Password must contain at least 6 characters!")
+	private String newPassword1;
+	@Size(min = 6, message = "New Password must contain at least 6 characters!")
+	@Transient
+	private String newPassword2;
+
+
 
 
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -34,14 +37,16 @@ public class User {
 			name="userauthority",
 			joinColumns = @JoinColumn(name="iduser"),
 			inverseJoinColumns = @JoinColumn(name="idauthority")
-			)
-	private List<Authority> myAuthorities = new ArrayList<Authority>();
+	)
+	//my own type of authority, not from spring security
+	private List<Authority> myauthorities = new ArrayList<Authority>();
 
-	public Integer getId() {
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -77,15 +82,36 @@ public class User {
 		this.active = active;
 	}
 
-	public List<Authority> getMyAuthorities() {
-		return myAuthorities;
+	public List<Authority> getMyauthorities() {
+		return myauthorities;
 	}
 
-	public void setMyAuthorities(List<Authority> myAuthorities) {
-		this.myAuthorities = myAuthorities;
+	public void setMyauthorities(List<Authority> myauthorities) {
+		this.myauthorities = myauthorities;
 	}
-	
 
-	
-	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getNewPassword1() {
+		return newPassword1;
+	}
+
+	public void setNewPassword1(String newPassword1) {
+		this.newPassword1 = newPassword1;
+	}
+
+	public String getNewPassword2() {
+		return newPassword2;
+	}
+
+	public void setNewPassword2(String newPassword2) {
+		this.newPassword2 = newPassword2;
+	}
+
 }
