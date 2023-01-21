@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Spot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @JsonProperty
     @Lob
     @Column(name = "picture")
@@ -23,7 +23,7 @@ public class Spot {
     @JoinColumn(name="idmushroom")
     Mushroom mushroom;
     @JsonProperty
-    double latitude;
+    private double latitude;
     @JsonProperty
     private double longitude;
     @JsonProperty
@@ -39,10 +39,10 @@ public class Spot {
     @OneToMany(mappedBy = "spot", cascade = CascadeType.ALL)
     List <Comment> comments;*/
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public Mushroom getMushroom() {
@@ -69,12 +69,6 @@ public class Spot {
     public void setDescription(String description) {
         this.description = description;
     }
-    public byte[] getPicture() {
-        return picture;
-    }
-    public void setPicture(byte[] picture){
-        this.picture = picture;
-    }
 
     public String getName() {
         return name;
@@ -82,5 +76,13 @@ public class Spot {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
     }
 }

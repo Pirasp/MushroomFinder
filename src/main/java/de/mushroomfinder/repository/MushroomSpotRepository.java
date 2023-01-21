@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface MushroomSpotRepository extends JpaRepository<Spot, Long> {
-    /*List<MushroomSpot> findAll(@Param("id") Long id);*/
+    List<Spot> findAll(@Param("id") Long id);
     Spot searchById(@Param("id") Long id);
 }
