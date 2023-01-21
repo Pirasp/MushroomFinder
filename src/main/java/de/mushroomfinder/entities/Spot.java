@@ -2,30 +2,32 @@ package de.mushroomfinder.entities;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "spots")
 public class Spot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
+    @JsonProperty
+    @Lob
+    @Column(name = "picture")
+    private byte[] picture;
+    @JsonProperty
+    private String name;
     @ManyToOne
     @JoinColumn(name="idmushroom")
     Mushroom mushroom;
+    @JsonProperty
     double latitude;
-    double longitude;
-    String description;
+    @JsonProperty
+    private double longitude;
+    @JsonProperty
+    private String description;
 
 /*    public List<Comment> getComments() {
         return comments;
@@ -37,10 +39,10 @@ public class Spot {
     @OneToMany(mappedBy = "spot", cascade = CascadeType.ALL)
     List <Comment> comments;*/
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public Mushroom getMushroom() {
@@ -67,5 +69,18 @@ public class Spot {
     public void setDescription(String description) {
         this.description = description;
     }
+    public byte[] getPicture() {
+        return picture;
+    }
+    public void setPicture(byte[] picture){
+        this.picture = picture;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

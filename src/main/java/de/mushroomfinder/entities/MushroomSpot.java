@@ -24,14 +24,6 @@ public class MushroomSpot {
     @JsonProperty
     private double longitude;
 
-/*    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idmushroom", referencedColumnName = "id")
-    Mushroom mushroom;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id", referencedColumnName = "id")
-    Spot spot;*/
-
     public Long getId() {
         return id;
     }
@@ -39,22 +31,6 @@ public class MushroomSpot {
     public void setId(Long id) {
         this.id = id;
     }
-
-/*    public Mushroom getMushroom() {
-        return mushroom;
-    }
-
-    public void setMushroom(Mushroom mushroom) {
-        this.mushroom = mushroom;
-    }
-
-    public Spot getSpot() {
-        return spot;
-    }
-
-    public void setSpot(Spot spot) {
-        this.spot = spot;
-    }*/
 
     public String getName() {
         return name;
