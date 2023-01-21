@@ -36,16 +36,11 @@ public class MapController {
 	/*lang long from marker and id from user*/
 	@PostMapping("/addmap")
 	public String addMarker(@ModelAttribute MushroomSpot mushroomspot,
-							@RequestParam("id") Long id,
 							@RequestParam("name") String name,
 							@RequestParam("picture") MultipartFile picture,
 							@RequestParam("description") String description,
 							@RequestParam("latitude") double latitude,
 							@RequestParam("longitude") double longitude) throws IOException {
-		/*Long testid = 1L;*/
-		/*double testlatitude = 10.5;
-		double testlongitude = 11;*/
-		mushroomspot.setId(id);
 		mushroomspot.setName(name);
 		try {
 			byte [] tmp = picture.getBytes();

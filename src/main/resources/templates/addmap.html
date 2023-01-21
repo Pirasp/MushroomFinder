@@ -49,6 +49,19 @@
                     } else {
                         marker.getGeometry().setCoordinates(coordinates);
                     }
+                    var lonlat = ol.proj.toLonLat(coordinates);
+                    var lon = lonlat[0];
+                    var lat = lonlat[1];
+                    document.getElementById("latitude").value = lat;
+                    document.getElementById("longitude").value = lon;
+                    var data = new FormData();
+                    data.append("longitude", lon);
+                    data.append("latitude", lat);
+                    fetch("/addmap", {
+                        method: "POST",
+                        body: data
+                    })
+                    .then(response => response.json());
                     //alert(marker.getGeometry().getCoordinates());
                 });
             </script>
@@ -88,10 +101,6 @@
 <form action="#" th:action="@{/addmap}" th:object="${mushroomspot}" method=post enctype="multipart/form-data" >
     <table>
         <tr>
-            <td>UserId:</td>
-            <td><input type="text" th:field="*{id}"/></td>
-        </tr>
-        <tr>
             <td>Name:</td>
             <td><input type="text" th:field="*{name}"/></td>
         </tr>
@@ -105,11 +114,11 @@
         </tr>
         <tr>
             <td>Latitude:</td>
-            <td><input type="text" th:field="*{latitude}"/></td>
+            <td><input type="text" th:field="*{latitude}" id="latitude"/></td>
         </tr>
         <tr>
             <td>Longitude:</td>
-            <td><input type="text" th:field="*{longitude}"/></td>
+            <td><input type="text" th:field="*{longitude}" id="longitude"/></td>
         </tr>
         <tr>
             <td><input type="submit" value="Save"></td>
