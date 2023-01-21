@@ -6,11 +6,14 @@ import de.mushroomfinder.service.MushroomLexiconService;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +40,7 @@ public class MushroomController {
     }
 
     @GetMapping(value = "/mushrooms/picture/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public @ResponseBody String getMushroomPicture(@PathVariable("id") Long id) {
+    public @ResponseBody byte[] getMushroomPicture(@PathVariable("id") Long id) {
 
         Mushroom mushroom = mushroomLexiconService.getMushroomById(id);
         return mushroom.getPicture();
@@ -74,5 +77,12 @@ public class MushroomController {
 
         mushroomLexiconAddService.addMushroom(mushroom);
         return "redirect:/lexicon";
+    }
+    //this is needed for Spring to be able to use its Multipartfile to byte method, without it spring dies :D
+    @InitBinder
+    protected void initBinder(HttpServletRequest request,
+                              ServletRequestDataBinder binder) throws ServletException {
+        binder.registerCustomEditor(byte[].class,
+                new ByteArrayMultipartFileEditor());
     }
 }

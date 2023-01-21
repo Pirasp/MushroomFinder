@@ -2,64 +2,81 @@
 <html>
 <head>
     <title>MushroomFinder</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://openlayers.org/en/v6.5.0/build/ol.js"></script>
     <link rel="stylesheet" href="https://openlayers.org/en/v6.5.0/css/ol.css" type="text/css">
 </head>
 <body>
-<tr>
-    <th><a href="/lexicon">Lexicon</a> </th>
-
-    <th>
-        <div id="map" class="map" style= "width: 512px; height: 512px" ></div>
-        <script>
-            var map = new ol.Map({
-                target: 'map',
-                layers: [
-                    new ol.layer.Tile({
-                        source: new ol.source.OSM()
-                    }),
-                    new ol.layer.Vector({
-                        source: new ol.source.Vector()
-                    })
-                ],
-                view: new ol.View({
-                    center: ol.proj.fromLonLat([37.41, 8.82]),
-                    zoom: 4
-                })
-            });
-
-            var markerSource = map.getLayers().getArray()[1].getSource();
-            var marker;
-            map.on('click', function(event) {
-                var coordinates = event.coordinate;
-                if (!marker) {
-                    marker = new ol.Feature({
-                        geometry: new ol.geom.Point(coordinates),
-                        name: 'Marker'
-                    });
-                    var style = new ol.style.Style({
-                        image: new ol.style.Icon({
-                            src: 'marker.png'
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <!--<th><a href="/lexicon">Lexicon</a> </th>-->
+            <div id="map" class="map" style= "height: 512px" ></div>
+            <script>
+                var map = new ol.Map({
+                    target: 'map',
+                    layers: [
+                        new ol.layer.Tile({
+                            source: new ol.source.OSM()
+                        }),
+                        new ol.layer.Vector({
+                            source: new ol.source.Vector()
                         })
-                    });
-                    marker.setStyle(style);
-                    markerSource.addFeature(marker);
-                } else {
-                    marker.getGeometry().setCoordinates(coordinates);
-                }
-                //alert(marker.getGeometry().getCoordinates());
-            });
-        </script>
-    </th>
-    <th>
-        <p>ID: <input type="text" id="id" value="" readonly></p>
-        <p>Name: <input type="text" id="name"></p>
-        <p>Picture: <input type="file" id="picture"></p>
-        <p>Description: <textarea id="description"></textarea></p>
-        <button type="submit">Submit</button>
-        </form>
-    </th>
-</tr>
+                    ],
+                    view: new ol.View({
+                        center: ol.proj.fromLonLat([11.57, 48.13]),
+                        zoom: 4
+                    })
+                });
+
+                var markerSource = map.getLayers().getArray()[1].getSource();
+                var marker;
+                map.on('click', function(event) {
+                    var coordinates = event.coordinate;
+                    if (!marker) {
+                        marker = new ol.Feature({
+                            geometry: new ol.geom.Point(coordinates),
+                            name: 'Marker'
+                        });
+                        var style = new ol.style.Style({
+                            image: new ol.style.Icon({
+                                src: 'marker.png'
+                            })
+                        });
+                        marker.setStyle(style);
+                        markerSource.addFeature(marker);
+                    } else {
+                        marker.getGeometry().setCoordinates(coordinates);
+                    }
+                    //alert(marker.getGeometry().getCoordinates());
+                });
+            </script>
+        </div>
+        <div class="col-md-4">
+            <form action="/addMarker" method="post">
+                <!--<div class="form-group">
+                    <label for="id">UserID:</label>
+                    <input type="text" class="form-control" id="id" value="" readonly>
+                </div>-->
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name">
+                </div>
+                <div class="form-group">
+                    <label for="picture">Picture:</label>
+                    <input type="file" class="form-control" id="picture">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <input type="text" class="form-control" id="description">
+                </div>
+                <div>
+                    <input class="btn btn-primary" type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
