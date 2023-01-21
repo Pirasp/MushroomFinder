@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 <head>
     <title>MushroomFinder</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -54,22 +53,30 @@
             </script>
         </div>
         <div class="col-md-4">
-            <form action="/addMarker" method="post">
-                <!--<div class="form-group">
+            <form action="/addmap" enctype="multipart/form-data" method="post">
+                <div class="form-group">
                     <label for="id">UserID:</label>
-                    <input type="text" class="form-control" id="id" value="" readonly>
-                </div>-->
+                    <input type="text" class="form-control" id="id" value="">
+                </div>
                 <div class="form-group">
                     <label for="name">Name:</label>
-                    <input type="text" class="form-control" id="name">
+                    <input type="String" class="form-control" id="name">
                 </div>
                 <div class="form-group">
                     <label for="picture">Picture:</label>
-                    <input type="file" class="form-control" id="picture">
+                    <input type="file" class="form-control" id="picture" accept="image/png, image/jpeg">
                 </div>
                 <div class="form-group">
                     <label for="description">Description:</label>
                     <input type="text" class="form-control" id="description">
+                </div>
+                <div class="form-group">
+                    <label for="latitude">Latitude:</label>
+                    <input type="text" class="form-control" id="latitude" value="10">
+                </div>
+                <div class="form-group">
+                    <label for="longitude">Latitude:</label>
+                    <input type="text" class="form-control" id="longitude" value="30">
                 </div>
                 <div>
                     <input class="btn btn-primary" type="submit" value="Submit">

@@ -6,12 +6,13 @@ import de.mushroomfinder.repository.MushroomSpotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 
@@ -24,21 +25,27 @@ public class MapController {
 	public String start(){
 		return"addmap";
 	}
-	
+
 	@RequestMapping("/addmap")
-	public String showContact(Model model, @RequestParam("id") Long id) {
-		model.addAttribute("mushroomspot", mushroomSpotRepository.findById(id));
+	public String showContact(/*Model model, @RequestParam("id") Long id*/) {
+		/*model.addAttribute("mushroomspot", mushroomSpotRepository.findById(id));*/
 		return "addmap";
 	}
-
-	@PostMapping("map/addMarker")
+	/*lang long from marker and id from user*/
+	@PostMapping("/addmap")
 	public String addMarker(@ModelAttribute MushroomSpot mushroomspot,
-							@RequestParam("id") Long id, @RequestParam("name") String name,
+							@RequestParam("id") Long id,
+							@RequestParam("name") String name,
 							@RequestParam("picture") MultipartFile picture,
 							@RequestParam("description") String description,
 							@RequestParam("latitude") double latitude,
 							@RequestParam("longitude") double longitude) throws IOException {
-		try{
+		/*Long testid = 1L;*/
+		/*double testlatitude = 10.5;
+		double testlongitude = 11;*/
+		mushroomspot.setId(id);
+		mushroomspot.setName(name);
+		try {
 			byte [] tmp = picture.getBytes();
 
 			if(tmp.length > 64000){
@@ -46,11 +53,9 @@ public class MapController {
 			}
 			mushroomspot.setPicture(tmp);
 		} catch (IOException e) {
-			return "redirect:/addmap/add/errorPictureSize";
+			return "redirect:/addmap/errorPictureSize";
 		}
-		mushroomspot.setId(id);
 		mushroomspot.setDescription(description);
-		mushroomspot.setName(name);
 		mushroomspot.setLatitude(latitude);
 		mushroomspot.setLongitude(longitude);
 		mushroomSpotRepository.save(mushroomspot);
@@ -58,8 +63,15 @@ public class MapController {
 
 	}
 
-	@RequestMapping("/addmap/add/errorPictureSize")
+	@RequestMapping("/addmap/errorPictureSize")
 	public String errorPicsize(){
 		return "/errorPictureSize";
+	}
+
+	@InitBinder
+	protected void initBinder(HttpServletRequest request,
+							  ServletRequestDataBinder binder) throws ServletException {
+		binder.registerCustomEditor(byte[].class,
+				new ByteArrayMultipartFileEditor());
 	}
 }
