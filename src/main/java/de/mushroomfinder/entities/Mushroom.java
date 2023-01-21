@@ -1,5 +1,7 @@
 package de.mushroomfinder.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,13 +13,16 @@ public class Mushroom {
     private Long id;
 
     @Column(name = "name", nullable = false)
+    @JsonProperty
     private String name;
 
     @Lob
     @Column(name = "picture")
+    @JsonProperty
     private byte[] picture;
 
     @Column(name = "description")
+    @JsonProperty
     private String description;
 
     // Getters and setters
