@@ -1,5 +1,7 @@
 package de.mushroomfinder.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,13 +10,18 @@ public class MushroomSpot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @JsonProperty
     @Lob
     @Column(name = "picture")
     private byte[] picture;
 
+    @JsonProperty
     private String name;
+    @JsonProperty
     private String description;
+    @JsonProperty
     private double latitude;
+    @JsonProperty
     private double longitude;
 
 /*    @OneToOne(cascade = CascadeType.ALL)

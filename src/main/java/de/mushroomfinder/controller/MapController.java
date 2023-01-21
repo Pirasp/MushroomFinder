@@ -21,14 +21,16 @@ public class MapController {
 	@Autowired
 	private MushroomSpotRepository mushroomSpotRepository;
 
+
 	@RequestMapping("/")
 	public String start(){
 		return"addmap";
 	}
 
-	@RequestMapping("/addmap")
-	public String showContact(/*Model model, @RequestParam("id") Long id*/) {
+	@GetMapping("/addmap")
+	public String showContact(Model model/*, @RequestParam("id") Long id*/) {
 		/*model.addAttribute("mushroomspot", mushroomSpotRepository.findById(id));*/
+		model.addAttribute("mushroomspot", new MushroomSpot());
 		return "addmap";
 	}
 	/*lang long from marker and id from user*/
