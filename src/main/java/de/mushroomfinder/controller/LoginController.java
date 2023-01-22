@@ -1,7 +1,10 @@
 package de.mushroomfinder.controller;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,10 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import de.mushroomfinder.entities.User;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import de.mushroomfinder.service.UserService;
+import org.springframework.web.servlet.ModelAndView;
+
 import de.mushroomfinder.repository.UserRepository;
 
 @Controller
@@ -22,37 +27,37 @@ public class LoginController {
     @Autowired
     private UserRepository userRepository;
 
-/*    @RequestMapping ("/login")
-    public String showLoginForm(User user, Model model) {
-        System.out.println("Add user "+ user.getId());
-        *//*UserService.addUser(user);*//*
-        userRepository.save(user);
-        model.addAttribute("msgs", "Added user");
-        return "redirect:/map";
-    }*/
-    @GetMapping("/")
-    public String showHomePage(){
-        return "index";
-    }
-
+	
+    @RequestMapping ("/login")
+	public String showLoginForm() {
+    	
+    	return "login"; 
+	}
+ 
     @GetMapping("/register")
-    public String showRegistrationForm(Model model){
-        model.addAttribute("user", new User());
-
-        return "registration";
+    public ModelAndView showRegistrationForm(Model model){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("registration");
+    	mv.addObject("user", new User());
+        
+        
+        return mv;
     }
 
-    @PostMapping("/process_register")
-    public String processRegister(User user) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        user.setPassword(user.getPassword());
-
-        userRepository.save(user);
-
-        return "map";
-    }
+	
+	  @PostMapping("/register/save")
+	  public String processRegister(@ModelAttribute User user) {
+		  System.out.println("process register");
+	  BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	  String encodedPassword = passwordEncoder.encode(user.getPassword());
+	  System.out.println("encoded Passwort:" + encodedPassword);
+	  user.setPassword(encodedPassword); user.setPassword(user.getPassword());
+	  user.setActive(1);
+	  userRepository.save(user);
+	  
+	  return "map"; 
+	  }
+	 
 
 
     @RequestMapping ( method=RequestMethod.GET, value="/prelogout")
@@ -61,7 +66,16 @@ public class LoginController {
         return "prelogout";
     }
 
-
+    @RequestMapping("/index")
+    public String showIndex() {
+    	return "index";
+    }
+    
+    @RequestMapping("/setSession")
+    public String setSession(HttpSession session, Principal principal) {
+    	session.setAttribute("login", principal.getName());
+    	return "redirect:map";
+    }
 
 }
 

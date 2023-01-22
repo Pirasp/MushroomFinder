@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +46,14 @@ public class CommentsAddController {
 	UserRepository userRepository;
 	
 	@GetMapping("comments/add/{id}")
-	public ModelAndView showCommentForm(@PathVariable("id") Integer id, Principal principal) {
+	public ModelAndView showCommentForm(@PathVariable("id") Long id, Principal principal) {
 		ModelAndView mv = new ModelAndView();
 		Comment comment = new Comment();
 
 		Optional<Spot> spotOpt = spotRepository.findById(id);
 		comment.setSpot(spotOpt.get());
 				
-		mv.setViewName("addComment");
+		mv.setViewName("comment/addComment");
 		mv.addObject("commentForm", comment);
 		return mv;
 		
@@ -75,7 +76,7 @@ public class CommentsAddController {
 	}
 	
 	@RequestMapping("/comments/{id}")
-	public ModelAndView showComments(@PathVariable("id") Integer id, Principal principal) {
+	public ModelAndView showComments(@PathVariable("id") Long id, Principal principal) {
 		ModelAndView mv = new ModelAndView();
 		Optional<Spot> spotOpt = spotRepository.findById(id);
 		if(spotOpt.isPresent() == false) {
@@ -125,7 +126,7 @@ public class CommentsAddController {
 	public String deleteComment(@PathVariable("id") Long id) {
 		Optional<Comment> optComment = commentRepository.findById(id);
 		Comment comment = optComment.get();
-		Integer spotId = comment.getSpot().getId();
+		Long spotId = comment.getSpot().getId();
 		commentRepository.delete(comment);
 		return "redirect:/comments/"+spotId;
 	}
@@ -136,7 +137,7 @@ public class CommentsAddController {
 		
 		Optional<Comment> optComment = commentRepository.findById(cId);
 		Comment comment = optComment.get();
-		Integer spotId = comment.getSpot().getId();
+		Long spotId = comment.getSpot().getId();
 		
 		Optional<CommentVote> optCommentVote = commentVoteRepository.findVotesByUserAndCommentId(oLoggedUser.get().getId(), cId);
 	
@@ -167,7 +168,7 @@ public class CommentsAddController {
 		
 		Optional<Comment> optComment = commentRepository.findById(cId);
 		Comment comment = optComment.get();
-		Integer spotId = comment.getSpot().getId();
+		Long spotId = comment.getSpot().getId();
 		
 		Optional<CommentVote> optCommentVote = commentVoteRepository.findVotesByUserAndCommentId(oLoggedUser.get().getId(), cId);
 	

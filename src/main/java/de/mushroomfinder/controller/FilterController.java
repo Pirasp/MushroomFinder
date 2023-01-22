@@ -35,7 +35,6 @@ public class FilterController {
 	
 	@GetMapping("/filter/")
 	public ModelAndView addEditFilter(Principal principal) {
-		List<Mushroom> mushrooms = mushroomRepository.findAll();
 		Optional<User> oLoggedUser = userRepository.findUserByLogin(principal.getName());
 		Long id = oLoggedUser.get().getId();
 		System.out.println("aktuelle Userid:" + id);
@@ -51,6 +50,7 @@ public class FilterController {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("filter/addEditFilter");
 		mv.addObject("filter", filter);
+		List<Mushroom> mushrooms = mushroomRepository.findAll();
 		mv.addObject("mushrooms", mushrooms);
 		return mv;
 	}

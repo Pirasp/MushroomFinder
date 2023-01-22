@@ -21,7 +21,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 public class Filter {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	
 	private float distance;
 	
@@ -63,11 +63,11 @@ public class Filter {
 		this.mushrooms = mushrooms;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
