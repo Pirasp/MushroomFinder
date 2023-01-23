@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 import de.mushroomfinder.repository.SpotVisitorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 @Entity
 @Table(name = "spotvisitors")
 public class SpotVisitor {
-    @Autowired
-    private SpotVisitorRepository spotVisitorRepository;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -55,12 +55,5 @@ public class SpotVisitor {
         return date;
     }
 
-    public SpotVisitor getLastVisitor() {
-        return spotVisitorRepository.findFirstBySpotOrderByVisitDateDesc(this);
-    }
-
-    public Long getTotalVisitors() {
-        return spotVisitorRepository.countBySpot(this);
-    }
 
 }

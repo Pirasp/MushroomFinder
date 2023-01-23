@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Spot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @JsonProperty
     @Lob
     @Column(name = "picture")
@@ -39,10 +39,10 @@ public class Spot {
     @OneToMany(mappedBy = "spot", cascade = CascadeType.ALL)
     List <Comment> comments;*/
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public Mushroom getMushroom() {
