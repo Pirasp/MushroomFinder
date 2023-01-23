@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.mushroomfinder.repository.UserRepository;
@@ -40,7 +41,6 @@ public class LoginController {
         mv.setViewName("registration");
     	mv.addObject("user", new User());
         
-        
         return mv;
     }
 
@@ -48,13 +48,20 @@ public class LoginController {
 	  @PostMapping("/register/save")
 	  public String processRegister(@ModelAttribute User user) {
 		  System.out.println("process register");
-	  BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-	  String encodedPassword = passwordEncoder.encode(user.getPassword());
-	  System.out.println("encoded Passwort:" + encodedPassword);
-	  user.setPassword(encodedPassword); user.setPassword(user.getPassword());
-	  user.setActive(1);
-	  userRepository.save(user);
-	  
+		  System.out.println("password1: " + user.getNewPassword1());
+		  System.out.println("password2: " + user.getNewPassword2());
+		  if(user.getNewPassword1().equals(user.getNewPassword2()) == false) {
+			  System.out.println("Passwords do not match");
+			  return "registration";
+		  }
+		  
+		  BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		  String encodedPassword = passwordEncoder.encode(user.getNewPassword1());
+		  System.out.println("encoded Passwort:" + encodedPassword);
+		  user.setPassword(encodedPassword);
+		  user.setActive(1);
+		  userRepository.save(user);
+		  
 	  return "map"; 
 	  }
 	 

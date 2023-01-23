@@ -22,8 +22,12 @@
       <div class="form-group row">
         <label class="col-4 col-form-label">Password: </label>
         <div class="col-8">
-          <input type="password" th:field="*{password}" class="form-control"
+          <input type="password" th:field="*{newPassword1}" class="form-control"
                  required minlength="6" maxlength="10"/>
+        </div>
+        <label class="col-4 col-form-label">Repeat Password:</label>
+        <div class="col-8">
+        	<input type="password" th:field="*{newPassword2}" class="form-control" required minlength="6" maxlength"10"/>
         </div>
       </div>
 	
