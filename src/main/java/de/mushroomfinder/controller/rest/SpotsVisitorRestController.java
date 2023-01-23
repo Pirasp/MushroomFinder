@@ -6,33 +6,39 @@ import de.mushroomfinder.entities.SpotVisitor;
 import de.mushroomfinder.repository.MushroomSpotRepository;
 import de.mushroomfinder.repository.SpotVisitorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/visitors")
 public class SpotsVisitorRestController {
     @Autowired
-    MushroomSpotRepository mushroomSpotRepository;
-    @Autowired
     SpotVisitorRepository spotVisitorRepository;
-    @GetMapping("/lastvisitor/{spotId}")
-    public SpotVisitor getLastVisitor(@PathVariable Long spotId) {
-        Spot spot = mushroomSpotRepository.findById(spotId).orElse(null);
-        if (spot == null) {
-            // Return appropriate response for spot not found
+
+    @GetMapping("/total/{spotId}")
+    public ResponseEntity<SpotVisitor> getTotalVisitors(@PathVariable Long spotId){
+        SpotVisitor spotVisitor = spotVisitorRepository.searchById(spotId);
+        if (spotVisitor == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return spotVisitorRepository.findFirstBySpotOrderByVisitDateDesc(spot);
+        SpotVisitor lastVisitor = spotVisitor.getLastVisitor();
+        Long totalVisitors = spotVisitor.getTotalVisitors();
+        return new ResponseEntity<>(lastVisitor, HttpStatus.OK);
     }
 
-    @GetMapping("/visitorcount/{spotId}")
-    public Long getVisitorCount(@PathVariable Long spotId) {
-        Spot spot = mushroomSpotRepository.findById(spotId).orElse(null);
-        if (spot == null) {
-            // Return appropriate response for spot not found
+    @GetMapping("/last/{spotId}")
+    public ResponseEntity<Long> getLastVisitor(@PathVariable Long spotId){
+        SpotVisitor spotVisitor = spotVisitorRepository.searchById(spotId);
+        if (spotVisitor == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return spotVisitorRepository.countBySpot(spot);
+        Long totalVisitors = spotVisitor.getTotalVisitors();
+        return new ResponseEntity<>(totalVisitors, HttpStatus.OK);
     }
 }
