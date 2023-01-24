@@ -14,6 +14,7 @@
 	          <th>Login</th>
 	          <th>Email</th>
 	          <th>Authorities</th>
+	          <th>Action</th>
 	        </tr>
         </thead>
         <tbody>
@@ -22,6 +23,7 @@
         		<td th:text="${user.login}"></td>
         		<td th:text="${user.email}"></td>
         		<td><p th:each="authority : ${user.myauthorities}"><a th:text="${authority.description}"></a></p> </td>
+        		<td><a th:href="@{/user/edit/{id}(id = ${user.id})}">Edit</a>
         	</tr>
         </tbody>
         </table>
