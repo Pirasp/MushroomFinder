@@ -17,9 +17,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import de.mushroomfinder.entities.Filter;
 import de.mushroomfinder.entities.Mushroom;
+import de.mushroomfinder.entities.Spot;
 import de.mushroomfinder.entities.User;
 import de.mushroomfinder.repository.FilterRepository;
 import de.mushroomfinder.repository.LexiconRepository;
+import de.mushroomfinder.repository.SpotRepository;
 import de.mushroomfinder.repository.UserRepository;
 
 @Controller
@@ -32,6 +34,9 @@ public class FilterController {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	SpotRepository spotRepository;
 	
 	@GetMapping("/filter/")
 	public ModelAndView addEditFilter(Principal principal) {
@@ -80,7 +85,7 @@ public class FilterController {
 		
 
 		filterRepository.save(filter);
-		return "redirect:/map";
+		return "redirect:/spots/filtered";
 	}
 	@RequestMapping("/filter/delete")
 	public String deleteFilter(Principal principal) {
@@ -89,7 +94,79 @@ public class FilterController {
 		if(optFilter.isPresent()) {
 			filterRepository.deleteById(optFilter.get().getId());
 		}
-		return "redirect:/map";
+		return "redirect:/spots/filtered";
 	}
+	
+	@GetMapping("/spots/filtered")
+	public ModelAndView showSpots(Principal principal) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("spots");
+		Optional<User> oLoggedUser = userRepository.findUserByLogin(principal.getName());
+		
+		Optional<Filter> oFilter = filterRepository.findFilterByIdUser(oLoggedUser.get().getId());
+		List<Spot> spots = new ArrayList<>();
+		if(oFilter.isPresent()) {
+			spots = spotRepository.findAll();
+			List<Mushroom> filterMush = oFilter.get().getMushrooms();
+			if(filterMush.isEmpty() == false) {
+				List<Spot> filteredSpots = new ArrayList<>();
+				for(int i = 0; i<filterMush.size(); i++) {
+					for(int j = 0; j<spots.size(); j++) {
+						try {
+							if(spots.get(j).getMushroom().getId()==filterMush.get(i).getId()) {
+								filteredSpots.add(spots.get(j));
+							}
+						}catch (Exception e) {
+							
+						}
+
+					}
+					
+				}
+				
+				spots = filteredSpots;
+			}else {
+				spots = spotRepository.findAll();
+			}
+
+			
+			//Calculate distances
+			List<Spot> spotsWithin = new ArrayList<>();
+			double spotLat;
+			double spotLng;
+			double distance;
+			//Get Entries within the distance
+			for(int i = 0; i<spots.size(); i++) {
+	
+				spotLat = spots.get(i).getLatitude();
+				spotLng = spots.get(i).getLongitude();
+			    final int R = 6371; // Radius of the earth
+	
+			    double latDistance = Math.toRadians(spotLat - oFilter.get().getLatitude());
+			    double lonDistance = Math.toRadians(spotLng - oFilter.get().getLongitude());
+			    double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+			            + Math.cos(Math.toRadians(oFilter.get().getLatitude())) * Math.cos(Math.toRadians(spotLat))
+			            * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+			    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+			    distance = R * c;
+	
+			    System.out.println("Distanz:" + distance);
+				if(distance<=oFilter.get().getDistance()) {
+					spotsWithin.add(spots.get(i));
+				//Calculate distances
+				System.out.println("spotsWithin: " + spotsWithin);
+				mv.addObject("spots", spotsWithin);
+				}
+			}
+			return mv;
+		}
+		else {
+			List<Spot> allSpots = spotRepository.findAll();
+			System.out.println("allSpots(no Filter): " + allSpots);
+			mv.addObject("spots", allSpots);
+			return mv;
+		}
+	}
+
 
 }

@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign up</title>
+    <div th:replace="layout/navbar::head"></div>
 </head>
 <body>
 <div class="container text-center">
   <div>
     <h1>User Registration - Sign Up</h1>
   </div>
+  <div class="alert alert-danger" th:text="${error}"></div>
   <form action="#" th:action="@{/register/save}" th:object="${user}"
         method="post" style="max-width: 600px; margin: 0 auto;">
     <div class="m-3">

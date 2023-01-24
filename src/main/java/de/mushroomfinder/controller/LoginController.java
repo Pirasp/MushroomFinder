@@ -46,12 +46,13 @@ public class LoginController {
 
 	
 	  @PostMapping("/register/save")
-	  public String processRegister(@ModelAttribute User user) {
+	  public String processRegister(@ModelAttribute User user, Model model) {
 		  System.out.println("process register");
 		  System.out.println("password1: " + user.getNewPassword1());
 		  System.out.println("password2: " + user.getNewPassword2());
 		  if(user.getNewPassword1().equals(user.getNewPassword2()) == false) {
 			  System.out.println("Passwords do not match");
+			  model.addAttribute("error", "Passwords do not match");
 			  return "registration";
 		  }
 		  
@@ -62,10 +63,9 @@ public class LoginController {
 		  user.setActive(1);
 		  userRepository.save(user);
 		  
-	  return "map"; 
+	  return "login"; 
 	  }
 	 
-
 
     @RequestMapping ( method=RequestMethod.GET, value="/prelogout")
     public String showPreLogout(HttpServletRequest request, HttpServletResponse response) {

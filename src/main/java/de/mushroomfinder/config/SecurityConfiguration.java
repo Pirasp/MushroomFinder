@@ -42,8 +42,9 @@ public class SecurityConfiguration {
 	    @Bean
 	    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 	        http.authorizeRequests()
-	            .antMatchers("/filter/").authenticated()
+	            .antMatchers("/filter/**").authenticated()
 	            .antMatchers("/comments/**").authenticated()
+	            .antMatchers("/spots/filtered").authenticated()
 	            .anyRequest().permitAll()
 	            .and()
 	            .formLogin()
