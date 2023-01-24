@@ -37,7 +37,7 @@
 	        <a class="nav-link" href="/register">Register</a>
 	      </li>
 	      <li class="nav-item" th:if="${session.login != null}">
-	        <a class="nav-link" th:text="${session.login}"></a>
+	        <a class="nav-link" th:text="${session.login}" href="/profile"></a>
 	      </li>
 	      <li class="nav-item" th:if="${session.login != null}">
 	        <a class="nav-link" href="/logout">Logout</a>

@@ -1,6 +1,8 @@
 package de.mushroomfinder.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
+import de.mushroomfinder.entities.Authority;
 import de.mushroomfinder.entities.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import de.mushroomfinder.repository.UserRepository;
+import de.mushroomfinder.util.Properties;
 
 @Controller
 
@@ -61,9 +66,14 @@ public class LoginController {
 		  System.out.println("encoded Passwort:" + encodedPassword);
 		  user.setPassword(encodedPassword);
 		  user.setActive(1);
+		  Authority authority = new Authority();
+		  authority.setId(Properties.USER_TYPE_USER);
+		  List<Authority> authorities = new ArrayList<>();
+		  authorities.add(authority);
+		  user.setMyauthorities(authorities);
 		  userRepository.save(user);
 		  
-	  return "login"; 
+	  return "redirect:/login"; 
 	  }
 	 
 
