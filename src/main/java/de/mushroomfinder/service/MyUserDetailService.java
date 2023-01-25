@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import de.mushroomfinder.config.MyUserDetails;
 import de.mushroomfinder.entities.User;
 import de.mushroomfinder.repository.UserRepository;
-  
+ 
   
 @Service
 public class MyUserDetailService implements UserDetailsService {

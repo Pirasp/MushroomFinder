@@ -13,9 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import de.mushroomfinder.entities.Filter;
+import de.mushroomfinder.entities.Marker;
 import de.mushroomfinder.entities.Mushroom;
 import de.mushroomfinder.entities.Spot;
 import de.mushroomfinder.entities.User;
@@ -37,6 +42,11 @@ public class FilterController {
 	
 	@Autowired
 	SpotRepository spotRepository;
+	
+	@Autowired
+	private ObjectMapper objectMapper;
+	
+	public List<Spot> filteredMarkers;
 	
 	@GetMapping("/filter/")
 	public ModelAndView addEditFilter(Principal principal) {
@@ -99,8 +109,9 @@ public class FilterController {
 	
 	@GetMapping("/spots/filtered")
 	public ModelAndView showSpots(Principal principal) {
+		this.filteredMarkers = new ArrayList<>();
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("spots");
+		mv.setViewName("filter/filteredSpots");
 		Optional<User> oLoggedUser = userRepository.findUserByLogin(principal.getName());
 		
 		Optional<Filter> oFilter = filterRepository.findFilterByIdUser(oLoggedUser.get().getId());
@@ -156,16 +167,37 @@ public class FilterController {
 				//Calculate distances
 				System.out.println("spotsWithin: " + spotsWithin);
 				mv.addObject("spots", spotsWithin);
+				
 				}
 			}
+			this.filteredMarkers = spotsWithin;
 			return mv;
 		}
 		else {
 			List<Spot> allSpots = spotRepository.findAll();
 			System.out.println("allSpots(no Filter): " + allSpots);
 			mv.addObject("spots", allSpots);
+			this.filteredMarkers = allSpots;
 			return mv;
 		}
+	}
+	
+	@RequestMapping("/filteredMarkers")
+	@ResponseBody
+	public String markers() throws JsonProcessingException {
+		List<Marker> markers = new ArrayList<>();
+		for(int i = 0; i< this.filteredMarkers.size(); i++) {
+			Marker marker = new Marker();
+			marker.setId(this.filteredMarkers.get(i).getId());
+			marker.setDescription(this.filteredMarkers.get(i).getDescription());
+			marker.setIdmushroom(this.filteredMarkers.get(i).getMushroom().getId().intValue());
+			marker.setLatitude(this.filteredMarkers.get(i).getLatitude());
+			marker.setLongitude(this.filteredMarkers.get(i).getLongitude());
+			markers.add(marker);
+			
+		}
+		System.out.println(objectMapper.writeValueAsString(markers));
+		return objectMapper.writeValueAsString(markers);
 	}
 
 
