@@ -39,7 +39,8 @@
                 var lonLat = [marker.longitude, marker.latitude];
                 var point = new ol.geom.Point(ol.proj.fromLonLat(lonLat)); // Create a point feature
                 var feature = new ol.Feature({
-                    geometry: point
+                    geometry: point,
+                    id: marker.id
                 });
                 vectorSource.addFeature(feature); // Add the feature to the vector source
             }
@@ -56,6 +57,17 @@
                 style: markerStyle
             });
             map.addLayer(vectorLayer); // Add the vector layer to the map
+
+            // Add a click event listener to the vector layer
+            vectorLayer.on("click", function(event) {
+                // Get the feature that was clicked
+                var feature = event.feature;
+                // Get the id of the mushroom associated with the feature
+                var mushroomId = feature.get("id");
+                // Redirect the user to the mushroom page
+                window.location.href = "/mushroom/" + mushroomId;
+            });
+
         });
 </script>
 </body>
