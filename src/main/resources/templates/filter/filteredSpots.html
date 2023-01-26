@@ -7,8 +7,10 @@
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
   <script src="https://openlayers.org/en/v6.5.0/build/ol.js"></script>
   <link rel="stylesheet" href="https://openlayers.org/en/v6.5.0/css/ol.css" type="text/css">
+  <div th:replace="layout/navbar::head"></div>
 </head>
 <body>
+<div th:insert="layout/navbar::navbar"></div>
 <div class="container">
   <div class="row">
     <div class="col-md-12">

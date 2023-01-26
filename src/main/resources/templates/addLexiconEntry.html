@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Mushroom Finder: Lexicon</title>
+    <div th:replace="layout/navbar::head"></div>
 </head>
 <body>
 <h1>Add Mushroom</h1>
+<div th:insert="layout/navbar::navbar"></div>
 <form action="#" th:action="@{/lexicon/add}" th:object="${mushroom}" method="post" enctype="multipart/form-data">
     <table>
         <tr>

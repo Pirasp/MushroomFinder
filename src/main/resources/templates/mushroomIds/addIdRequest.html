@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Mushroom Finder: Id Request</title>
+    <div th:replace="layout/navbar::head"></div>
 </head>
 <body>
+<div th:insert="layout/navbar::navbar"></div>
 <form action="#" enctype="multipart/form-data" method="post" th:action="@{/mushroomIds/add}" th:object="${mushroomId}">
     <label>User ID:</label>
     <input type="text" th:field="*{userId}"/>
