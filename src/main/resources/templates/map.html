@@ -37,7 +37,6 @@
             var vectorSource = new ol.source.Vector(); // Create a vector source
             for (var i = 0; i < markers.length; i++) {
                 var marker = markers[i];
-                console.log(marker);
                 var lonLat = [marker.longitude, marker.latitude];
                 var point = new ol.geom.Point(ol.proj.fromLonLat(lonLat)); // Create a point feature
                 var feature = new ol.Feature({

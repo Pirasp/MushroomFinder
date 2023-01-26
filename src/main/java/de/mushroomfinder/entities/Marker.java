@@ -16,10 +16,6 @@ public class Marker {
     private double latitude;
     @JsonProperty
     private double longitude;
-    @JsonProperty
-    private String description;
-    @JsonProperty
-    private int idmushroom;
 
     //getters and setters
 }
