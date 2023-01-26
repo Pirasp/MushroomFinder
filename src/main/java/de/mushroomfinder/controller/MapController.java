@@ -26,7 +26,8 @@ public class MapController {
 	private MushroomSpotRepository mushroomSpotRepository;
 	@Autowired
 	private ObjectMapper objectMapper;
-	private MarkerRepository markerRepository;public String showContact() {
+	@Autowired
+	private MarkerRepository markerRepository;
 
 
 	@RequestMapping("/")
@@ -50,7 +51,7 @@ public class MapController {
 		return objectMapper.writeValueAsString(markers);
 	}
 
-	//ADDMAP
+	//ADDMAP -----------------------------------------------------------------------------------------------------------
 	@GetMapping("/map/add")
 	public String showContact(Model model/*, @RequestParam("id") Long id*/) {
 		/*model.addAttribute("mushroomspot", mushroomSpotRepository.findById(id));*/
