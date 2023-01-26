@@ -5,8 +5,9 @@
     <title>Mushroom Finder: Lexicon</title>
 </head>
 <body>
-<h1>Add Mushroom</h1>
-<form action="#" th:action="@{/lexicon/add}" th:object="${mushroom}" method="post" enctype="multipart/form-data">
+<h1>Edit Lexicon Entry</h1>
+
+<form th:object="${mushroom}" th:action="@{/mushrooms/edit/{id}(id=${mushroom.id})}" method="post" enctype="multipart/form-data">
     <table>
         <tr>
             <td>Name:</td>

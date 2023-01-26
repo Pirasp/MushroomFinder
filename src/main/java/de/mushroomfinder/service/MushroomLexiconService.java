@@ -1,7 +1,7 @@
 package de.mushroomfinder.service;
 
 import de.mushroomfinder.entities.Mushroom;
-import de.mushroomfinder.repository.MushroomRepository;
+import de.mushroomfinder.repository.LexiconRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +9,10 @@ import java.util.List;
 
 @Service
 public class MushroomLexiconService {
-    private final MushroomRepository mushroomRepository;
+    private final LexiconRepository mushroomRepository;
 
     @Autowired
-    public MushroomLexiconService(MushroomRepository mushroomRepository) {
+    public MushroomLexiconService(LexiconRepository mushroomRepository) {
         this.mushroomRepository = mushroomRepository;
     }
 

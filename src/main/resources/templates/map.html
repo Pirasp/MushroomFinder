@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MushroomFinder</title>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v6.5.0/build/ol.js"></script>
+    <link rel="stylesheet" href="https://openlayers.org/en/v6.5.0/css/ol.css" type="text/css">
+	
+</head>
+<body>
+<div th:insert="layout/navbar::navbar"></div>
+<H1>Mushroom Finder</H1>
+<div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+<tr>
+    <th><a href="/lexicon">Lexicon</a> </th>
+    <th> <a href="/mushroomIds">Mushroom Ids</a></th>
+    <th><a href="/map/add">Add Spot</a></th>
+</tr>
+<div id="map" class="map" style= "width: 100%; height: 700px" ></div>
+<script>
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            }),
+            new ol.layer.Vector({
+                source: new ol.source.Vector()
+            })
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([12.10434300, 49.02391200]),
+            zoom: 10
+        })
+    });
+
+    fetch("/markers")
+        .then(response => response.json())
+        .then(markers => {
+            var vectorSource = new ol.source.Vector(); // Create a vector source
+            for (var i = 0; i < markers.length; i++) {
+                var marker = markers[i];
+                var lonLat = [marker.longitude, marker.latitude];
+                var point = new ol.geom.Point(ol.proj.fromLonLat(lonLat)); // Create a point feature
+                var feature = new ol.Feature({
+                    geometry: point,
+                    id: marker.id
+                });
+                vectorSource.addFeature(feature); // Add the feature to the vector source
+            }
+            var markerStyle = new ol.style.Style({
+                image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                    anchor: [0.5, 0.5],
+                    anchorXUnits: 'fraction',
+                    anchorYUnits: 'fraction',
+                    src: '../marker.png'
+                }))
+            });
+            var vectorLayer = new ol.layer.Vector({
+                source: vectorSource,
+                style: markerStyle
+            });
+            map.addLayer(vectorLayer); // Add the vector layer to the map
+
+            // Add a click event listener to the vector layer
+            vectorLayer.on("click", function(event) {
+                // Get the feature that was clicked
+                var feature = event.feature;
+                // Get the id of the mushroom associated with the feature
+                var mushroomId = feature.get("id");
+                // Redirect the user to the mushroom page
+                window.location.href = "/spots/edit/" + mushroomId;
+            });
+
+        });
+</script>
+</body>
+</html>

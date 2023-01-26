@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MushroomRepository extends JpaRepository<Mushroom, Long> {
+public interface LexiconRepository extends JpaRepository<Mushroom, Long> {
     List<Mushroom> searchByName(@Param("name") String name);
 
     Mushroom searchById(@Param("id") Long id);
