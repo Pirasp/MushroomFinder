@@ -40,9 +40,12 @@
                             name: 'Marker'
                         });
                         var style = new ol.style.Style({
-                            image: new ol.style.Icon({
-                                src: 'marker.png'
-                            })
+                            image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                            anchor: [0.5, 0.5],
+                            anchorXUnits: 'fraction',
+                            anchorYUnits: 'fraction',
+                            src: '../marker.png'
+                            }))
                         });
                         marker.setStyle(style);
                         markerSource.addFeature(marker);
