@@ -45,6 +45,7 @@ public class SecurityConfiguration {
 	            .antMatchers("/filter/**").authenticated()
 	            .antMatchers("/comments/**").authenticated()
 	            .antMatchers("/spots/filtered").authenticated()
+	            .antMatchers("/profile").authenticated()
 	            .antMatchers("/user/**").hasAuthority("ADMIN")
 	            .anyRequest().permitAll()
 	            .and()

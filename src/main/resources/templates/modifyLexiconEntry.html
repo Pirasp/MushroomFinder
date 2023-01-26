@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Mushroom Finder: Lexicon</title>
+    <div th:replace="layout/navbar::head"></div>
 </head>
 <body>
 <h1>Edit Lexicon Entry</h1>
-
+<div th:insert="layout/navbar::navbar"></div>
 <form th:object="${mushroom}" th:action="@{/mushrooms/edit/{id}(id=${mushroom.id})}" method="post" enctype="multipart/form-data">
     <table>
         <tr>
