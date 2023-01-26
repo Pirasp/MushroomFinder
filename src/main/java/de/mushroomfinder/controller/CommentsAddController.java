@@ -9,10 +9,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,21 +47,25 @@ public class CommentsAddController {
 	UserRepository userRepository;
 	
 	@GetMapping("comments/add/{id}")
-	public ModelAndView showCommentForm(@PathVariable("id") Integer id, Principal principal) {
+	public ModelAndView showCommentForm(@PathVariable("id") Long id, Principal principal) {
 		ModelAndView mv = new ModelAndView();
 		Comment comment = new Comment();
-
 		Optional<Spot> spotOpt = spotRepository.findById(id);
+		if(spotOpt.isPresent()==false) {
+			mv.setViewName("map");
+			mv.addObject("error", "The spot to be commented does not exist");
+			return mv;
+		}
+
+		mv.setViewName("comment/addComment");
 		comment.setSpot(spotOpt.get());
-				
-		mv.setViewName("addComment");
 		mv.addObject("commentForm", comment);
 		return mv;
 		
 	}
 	
 	@PostMapping("comments/add/save")
-	public String saveComment(@ModelAttribute("commentForm") Comment commentForm, Principal principal) {
+	public String saveComment(@ModelAttribute("commentForm") Comment commentForm, Principal principal, Model model) {
 		Optional<Spot> spotOpt = spotRepository.findById(commentForm.getSpot().getId());
 		commentForm.setSpot(spotOpt.get());
 		commentForm.setDate(LocalDate.now());
@@ -68,19 +74,24 @@ public class CommentsAddController {
 		if(oLoggedUser.isPresent() == false) {
 			System.out.println("Kein User eingeloggt");
 		}
+		if(commentForm.getMessage().isBlank()) {
+			model.addAttribute("error", "Comment Message must not be empty!");
+			return "comment/addComment";
+		}
 		commentForm.setUser(oLoggedUser.get());
 		Comment comment = commentRepository.save(commentForm);
 		System.out.println("Kommentar mit der ID: " + comment.getId() + " gespeichert. Comment Spot: " + comment.getSpot());
-		return("map");
+		return("redirect:/comments/" + comment.getSpot().getId());
 	}
 	
 	@RequestMapping("/comments/{id}")
-	public ModelAndView showComments(@PathVariable("id") Integer id, Principal principal) {
+	public ModelAndView showComments(@PathVariable("id") Long id, Principal principal) {
 		ModelAndView mv = new ModelAndView();
 		Optional<Spot> spotOpt = spotRepository.findById(id);
 		if(spotOpt.isPresent() == false) {
 			System.out.println("Spot " + id + " existiert nicht!");
 			mv.setViewName("map");
+			mv.addObject("error", "This spot does not exist!");
 			return mv;
 		}
 		Spot spot = spotOpt.get();
@@ -89,6 +100,7 @@ public class CommentsAddController {
 		mv.setViewName("comment/showComments");
 		mv.addObject("comments", comments);
 		mv.addObject("userName", principal.getName());
+		mv.addObject("spotId", spot.getId());
 		
 		return mv;
 	}
@@ -96,10 +108,13 @@ public class CommentsAddController {
 	@GetMapping("/comments/edit/{id}")
 	public ModelAndView commentEditForm(@PathVariable("id") Long id, Principal principal) {
 		Optional<Comment> optComment = commentRepository.findById(id);
-		Comment comment = optComment.get();
-		
 		ModelAndView mv = new ModelAndView();
-		
+		if(optComment.isPresent()==false) {
+			mv.setViewName("map");
+			mv.addObject("error", "The comment to be edited does not exist!");
+			return mv;
+		}
+		Comment comment = optComment.get();		
 		Optional<User> oLoggedUser = userRepository.findUserByLogin(principal.getName());
 		
 		if(comment.getUser().getId() != oLoggedUser.get().getId()) {
@@ -122,10 +137,14 @@ public class CommentsAddController {
 	}
 	
 	@GetMapping("/comments/delete/{id}")
-	public String deleteComment(@PathVariable("id") Long id) {
+	public String deleteComment(@PathVariable("id") Long id, Model model) {
 		Optional<Comment> optComment = commentRepository.findById(id);
+		if(optComment.isPresent()==false) {
+			model.addAttribute("error", "The comment to be deleted does not exist!");
+			return "map";
+		}
 		Comment comment = optComment.get();
-		Integer spotId = comment.getSpot().getId();
+		Long spotId = comment.getSpot().getId();
 		commentRepository.delete(comment);
 		return "redirect:/comments/"+spotId;
 	}
@@ -136,7 +155,7 @@ public class CommentsAddController {
 		
 		Optional<Comment> optComment = commentRepository.findById(cId);
 		Comment comment = optComment.get();
-		Integer spotId = comment.getSpot().getId();
+		Long spotId = comment.getSpot().getId();
 		
 		Optional<CommentVote> optCommentVote = commentVoteRepository.findVotesByUserAndCommentId(oLoggedUser.get().getId(), cId);
 	
@@ -167,7 +186,7 @@ public class CommentsAddController {
 		
 		Optional<Comment> optComment = commentRepository.findById(cId);
 		Comment comment = optComment.get();
-		Integer spotId = comment.getSpot().getId();
+		Long spotId = comment.getSpot().getId();
 		
 		Optional<CommentVote> optCommentVote = commentVoteRepository.findVotesByUserAndCommentId(oLoggedUser.get().getId(), cId);
 	

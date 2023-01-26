@@ -9,7 +9,7 @@
 	<div th:insert="layout/navbar::navbar">
 	</div>
 	<h1>Comments:</h1>
-	
+	<a th:href="@{add/{id}(id=${spotId})}">Add a new Comment</a>
 	<div class="row d-flex justify-content-center" th:if="${ not#lists.isEmpty(comments)}">
   		<div class="col-md-8 col-lg-6">
     		<div class="card shadow-0 border" style="background-color: #f0f2f5;">

@@ -15,7 +15,7 @@ public class Mushroom {
 
     @Lob
     @Column(name = "picture")
-    private String picture;
+    private byte[] picture;
 
     @Column(name = "description")
     private String description;
@@ -37,13 +37,7 @@ public class Mushroom {
         this.name = name;
     }
 
-    public String getPicture() {
-        return "/pictures/"+picture;
-    }
 
-    public void setPicture(String picture){
-        this.picture = picture;
-    }
 
     public String getDescription() {
         return description;
@@ -52,5 +46,13 @@ public class Mushroom {
     public void setDescription(String description) {
         this.description = description;
     }
+
+	public byte[] getPicture() {
+		return picture;
+	}
+
+	public void setPicture(byte[] picture) {
+		this.picture = picture;
+	}
 }
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import de.mushroomfinder.entities.Filter;
 
 @Repository
-public interface FilterRepository extends JpaRepository<Filter, Integer>{
+public interface FilterRepository extends JpaRepository<Filter, Long>{
 	
 	@Query("select f from Filter f where f.user.id=:iduser")
 	Optional<Filter> findFilterByIdUser(Long iduser);

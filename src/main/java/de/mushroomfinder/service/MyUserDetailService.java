@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import de.mushroomfinder.config.MyUserDetails;
 import de.mushroomfinder.entities.User;
 import de.mushroomfinder.repository.UserRepository;
-  
+ 
   
 @Service
 public class MyUserDetailService implements UserDetailsService {
@@ -22,10 +22,9 @@ public class MyUserDetailService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
 		Optional<User> oUser= userRepository.findUserByLogin(username);
-		oUser.orElseThrow(()-> new UsernameNotFoundException("Not found "+username));
-		System.out.println("User found at the UserDetailsService="+ oUser.get().getLogin());
+		oUser.orElseThrow(()-> new UsernameNotFoundException("User "+username + "not found"));
+		System.out.println("User found "+ oUser.get().getLogin());
 		return new MyUserDetails(oUser.get());
 	}
 

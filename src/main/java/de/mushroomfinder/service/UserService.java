@@ -1,45 +1,32 @@
 package de.mushroomfinder.service;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import de.mushroomfinder.config.MyUserDetails;
+import de.mushroomfinder.entities.Authority;
 import de.mushroomfinder.entities.User;
 import de.mushroomfinder.repository.UserRepository;
+import de.mushroomfinder.util.Properties;
 
 @Service
-public class UserService implements UserDetailsService{
+@Transactional
+public class UserService{
+	@Autowired
+	private UserRepository userRepository;
+	
 
-
-    @Autowired
-    private UserRepository userRepository;
-
-/*    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // TODO Auto-generated method stub
-        Optional<User> oUser= userRepository.findUserByLogin(username);
-        oUser.orElseThrow(()-> new UsernameNotFoundException("Not found "+username));
-        System.out.println("User found at the UserDetailsService="+ oUser.get().getLogin());
-        return new MyUserDetails(oUser.get());
-    }
-
-    public void addUser(User user){
-        userRepository.save(user);
-    }*/
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        return new MyUserDetails(user);
-    }
-
-
+	
+	public boolean loginExists(String login) {
+		return userRepository.findUserByLogin(login).isPresent();
+	}
+	
+	public boolean emailExists(String email) {
+		return userRepository.findByEmail(email)!=null;
+	}
 }
-

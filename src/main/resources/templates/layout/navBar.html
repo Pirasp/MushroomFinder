@@ -2,12 +2,13 @@
 <html lang="en"	xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>MushroomFinder</title>
+<th:block th:fragment="head">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+</th:block>
 </head>
 <body>
 
@@ -28,6 +29,18 @@
 	      </li>
 	      <li class="nav-item">
 	        <a class="nav-link" href="/lexicon">Lexicon</a>
+	      </li>
+	      <li class="nav-item" th:if="${session.login==null}">
+	        <a class="nav-link" href="/login">Login</a>
+	      </li>
+	      <li class="nav-item" th:if="${session.login==null}">
+	        <a class="nav-link" href="/register">Register</a>
+	      </li>
+	      <li class="nav-item" th:if="${session.login != null}">
+	        <a class="nav-link" th:text="${session.login}" href="/profile"></a>
+	      </li>
+	      <li class="nav-item" th:if="${session.login != null}">
+	        <a class="nav-link" href="/logout">Logout</a>
 	      </li>
 
 	    </ul>
