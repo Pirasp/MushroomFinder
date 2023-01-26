@@ -57,7 +57,7 @@
                     var data = new FormData();
                     data.append("longitude", lon);
                     data.append("latitude", lat);
-                    fetch("/addmap", {
+                    fetch("/map/add", {
                         method: "POST",
                         body: data
                     })
@@ -98,7 +98,7 @@
         <input class="btn btn-primary" type="submit" value="Submit">
     </div>
 </form>-->
-<form action="#" th:action="@{/addmap}" th:object="${spot}" method=post enctype="multipart/form-data" >
+<form action="#" th:action="@{/map/add}" th:object="${spot}" method=post enctype="multipart/form-data" >
     <table>
         <tr>
             <td>Name:</td>
