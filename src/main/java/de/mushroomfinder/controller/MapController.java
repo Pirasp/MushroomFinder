@@ -53,7 +53,7 @@ public class MapController {
 
 	//ADDMAP -----------------------------------------------------------------------------------------------------------
 	@GetMapping("/map/add")
-	public String showContact(Model model/*, @RequestParam("id") Long id*/) {
+	public String addmap(Model model/*, @RequestParam("id") Long id*/) {
 		/*model.addAttribute("mushroomspot", mushroomSpotRepository.findById(id));*/
 		model.addAttribute("spot", new Spot());
 		return "addmap";
