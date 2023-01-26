@@ -146,7 +146,7 @@ public class LoginController {
     @RequestMapping("/setSession")
     public String setSession(HttpSession session, Principal principal) {
     	session.setAttribute("login", principal.getName());
-    	return "redirect:map";
+    	return "redirect:/map";
     }
 
 }
