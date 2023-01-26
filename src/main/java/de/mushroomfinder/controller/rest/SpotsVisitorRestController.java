@@ -27,8 +27,8 @@ public class SpotsVisitorRestController {
         if (spotVisitor == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        SpotVisitor lastVisitor = spotVisitorRepository.findFirstByIdspotOrderByDateDesc(spotId);
-        return new ResponseEntity<>(lastVisitor, HttpStatus.OK);
+        SpotVisitor totalVisitors = spotVisitorRepository.findFirstByIdspotOrderByDateDesc(spotId);
+        return new ResponseEntity<>(totalVisitors, HttpStatus.OK);
     }
 
     @GetMapping("/last/{spotId}")
@@ -37,7 +37,7 @@ public class SpotsVisitorRestController {
         if (spotVisitor == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Long totalVisitors = spotVisitorRepository.countById(spotId);
-        return new ResponseEntity<>(totalVisitors, HttpStatus.OK);
+        Long lastVisitor = spotVisitorRepository.countById(spotId);
+        return new ResponseEntity<>(lastVisitor, HttpStatus.OK);
     }
 }

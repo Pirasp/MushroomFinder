@@ -1,10 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Mushroom Finder: Spots</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
-$END$
-</body>
-</html>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h1>Show Spot Entry</h1>
+      <form th:object="${spot}" th:action="@{/spots/{id}(id=${spot.id})}" method="get" enctype="multipart/form-data">
+        <script>
+        function onPageLoad(){
+          var spotId = document.getElementById("spotId").value;
+          getTotalVisitors(spotId);
+        }
+        function getTotalVisitors(spotId){
+          fetch(àpi/visitors/total/${spotId}`)
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById("totalVisitors".innerHTML = data.totalVisitors;
+          })
+          .catch(error => console.log(error));
+        }
+        window.addEventListener("load", onPageLoad);
+        </script>
+        <table class="table table-bordered">
+          <tr>
+            <td>Name:</td>
+            <td class="form-control" th:text="${spot.name}" readonly>
+          </tr>
+          <tr>
+            <td>Description:</td>
+            <td class="form-control" th:text="${spot.description}" readonly>
+          </tr>
+          <tr>
+            <td>Picture:</td>
+            <td><img th:src="@{/spots/picture/{id}(id=${spot.id})}" alt="no picture available" width="100" height="100"></td>
+          </tr>
+          <tr>
+            <td>Longitude:</td>
+            <td class="form-control" th:text="${spot.longitude}" readonly>
+          </tr>
+          <tr>
+            <td>Latitude:</td>
+            <td class="form-control" th:text="${spot.latitude}" readonly>
+          </tr>
+          <tr>
+            <td>Total Visitors:</td>
+            <td class="form-control" th:text="${totalVisitors}" readonly>
+          </tr>
+
+        </table>
+      </form>
+    </div>
+  </div>
+</div>

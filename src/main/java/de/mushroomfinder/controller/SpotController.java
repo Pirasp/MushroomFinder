@@ -48,6 +48,12 @@ public class SpotController {
         return spot.getPicture();
     }
 
+    @GetMapping("/spots/{id}")
+    public ModelAndView getShowSpot(@PathVariable Long id) throws IllegalArgumentException{
+        Spot spot = mushroomSpotRepository.searchById(id);
+        return new ModelAndView("showSpotEntry", "spot", spot);
+    }
+
     @GetMapping("/spots/edit/{id}")
     public ModelAndView getEditSpot(@PathVariable Long id) throws IllegalArgumentException{
         Spot spot = mushroomSpotRepository.searchById(id);

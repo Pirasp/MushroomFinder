@@ -16,21 +16,7 @@
         <input type="text" id="searchTerm" name="searchTerm" th:value="${searchTerm}" placeholder="search by name" class="form-control mr-sm-2">
         <input type="submit" value="Search" class="btn btn-primary my-2 my-sm-0">
       </form>
-      <script>
-        function onPageLoad(){
-          var spotId = document.getElementById("spotId").value;
-          getTotalVisitors(spotId);
-        }
-        function getTotalVisitors(spotId){
-          fetch(àpi/visitors/total/${spotId}`)
-          .then(response => response.json())
-          .then(data => {
-            document.getElementById("totalVisitors".innerHTML = data.totalVisitors;
-          })
-          .catch(error => console.log(error));
-        }
-        window.addEventListener("load", onPageLoad);
-      </script>
+
       <table class="table">
         <thead>
         <tr>
@@ -40,7 +26,6 @@
           <th>Longitude</th>
           <th>Latitude</th>
           <th style="display:none">spotid</th>
-          <th>Total Visitors:</th>
           <th>Actions</th>
         </tr>
         </thead>
@@ -52,9 +37,10 @@
           <td th:text="${spot.longitude}"></td>
           <td th:text="${spot.latitude}"></td>
           <td><input type="hidden" id="spotId" th:text="${spot.id}"></td>
-          <td th:text="${totalVisitors}"></td>
+
           <td>
             <a th:href="@{/spots/edit/{id}(id=${spot.id})}" class="btn btn-primary">Edit</a>
+            <a th:href="@{/spots/{id}(id=${spot.id})}" class="btn btn-primary">Visitor Count</a>
 			<a th:href="@{/comments/{id}(id=${spot.id})}" class="btn btn-primary">View Comments</a>
           </td>
         </tr>
