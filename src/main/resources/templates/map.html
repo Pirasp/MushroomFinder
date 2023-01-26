@@ -14,24 +14,14 @@
 </head>
 <body>
 <div th:insert="layout/navbar::navbar"></div>
-<H1>Mushroom Finder</H1>
 <div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
 <tr>
-    <th><a href="/lexicon">Lexicon</a> </th>
     <th> <a href="/mushroomIds">Mushroom Ids</a></th>
     <th><a href="/map/add">Add Spot</a></th>
 </tr>
 <div id="map" class="map" style= "width: 100%; height: 700px" ></div>
 </body>
 </html>
-
-
-
-
-
-
-
-
 
 <script>
     var map = new ol.Map({
