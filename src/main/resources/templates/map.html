@@ -14,6 +14,17 @@
     <th><a href="/map/add">Add Spot</a></th>
 </tr>
 <div id="map" class="map" style= "width: 100%; height: 700px" ></div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
 <script>
     var map = new ol.Map({
         target: 'map',
@@ -55,21 +66,24 @@
             });
             var vectorLayer = new ol.layer.Vector({
                 source: vectorSource,
-                style: markerStyle
+                style: markerStyle,
+                name: 'markerLayer'
             });
+            vectorLayer.set('name', 'MarkerLayer');
             map.addLayer(vectorLayer); // Add the vector layer to the map
 
-            // Add a click event listener to the vector layer
-            vectorLayer.on("click", function(event) {
-                // Get the feature that was clicked
-                var feature = event.feature;
-                // Get the id of the mushroom associated with the feature
-                var mushroomId = feature.get("id");
-                // Redirect the user to the mushroom page
-                window.location.href = "/spots/edit/" + mushroomId;
-            });
-
         });
+
+        //click event
+        //click event
+        map.on('click', function (evt){
+            var feature = map.forEachFeatureAtPixel(evt.pixel, function (feat, layer) {
+                return feat;
+            });
+            if(feature){
+                var ID = feature.get('id');
+                window.location.href = "/spots/edit/" + ID;
+            }
+        });
+
 </script>
-</body>
-</html>
