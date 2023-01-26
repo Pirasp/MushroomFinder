@@ -9,6 +9,7 @@ import javax.persistence.*;
 public class Marker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty
     private Long id;
 
     @JsonProperty
