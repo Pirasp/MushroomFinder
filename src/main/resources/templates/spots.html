@@ -1,45 +1,13 @@
-<!--
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <title>Mushroom Finder: Spots</title>
-</head>
-<body>
-<h1>Spots</h1>
-<a href="/addmap">Back to Map</a>
-<form action="#" th:action="@{/spots}" method="get">
-  <label for="searchTerm">Search Term:</label>
-  <input type="text" id="searchTerm" name="searchTerm" th:value="${searchTerm}">
-  <input type="submit" value="Search">
-</form>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Picture</th>
-    <th>Longitude</th>
-    <th>Latitude</th>
-  </tr>
-  <tr th:each="spot : ${spots}">
-    <td th:text="${spot.name}"></td>
-    <td th:text="${spot.description}"></td>
-    <td><img th:src="@{/spots/picture/{id}(id=${spot.id})}" alt="no picture available" width="100" height="100"></td>
-    <td th:text="${spot.longitude}"></td>
-    <td th:text="${spot.latitude}"></td>
-    <td><a th:href="@{/spots/edit/{id}(id=${spot.id})}">Edit</a></td>
-  </tr>
-</table>
-</body>
-</html>-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Mushroom Finder: Spots</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<div th:replace="layout/navbar::head"></div>
 </head>
 <body>
+<div th:insert="layout/navbar::navbar"></div>
 <div class="container">
   <div class="row">
     <div class="col-md-12">
@@ -70,6 +38,7 @@
           <td th:text="${spot.latitude}"></td>
           <td>
             <a th:href="@{/spots/edit/{id}(id=${spot.id})}" class="btn btn-primary">Edit</a>
+			<a th:href="@{/comments/{id}(id=${spot.id})}" class="btn btn-primary">View Comments</a>
           </td>
         </tr>
         </tbody>

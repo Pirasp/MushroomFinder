@@ -29,7 +29,7 @@ public class Spot {
     @JsonProperty
     private String description;
 
-/*    public List<Comment> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
     public void setComments(List<Comment> comments) {
@@ -37,7 +37,7 @@ public class Spot {
     }
 
     @OneToMany(mappedBy = "spot", cascade = CascadeType.ALL)
-    List <Comment> comments;*/
+    List <Comment> comments;
 
     public Long getId() {
         return id;
