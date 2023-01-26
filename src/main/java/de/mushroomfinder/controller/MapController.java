@@ -24,19 +24,31 @@ import java.util.List;
 public class MapController {
 	@Autowired
 	private MushroomSpotRepository mushroomSpotRepository;
+	@Autowired
+	private ObjectMapper objectMapper;
+	private MarkerRepository markerRepository;public String showContact() {
 
 
 	@RequestMapping("/")
-	public String start(){
+	public String start(Model model){
+		model.addAttribute("markers", markerRepository.findAll());
 		return"map";
 	}
 	
 	@RequestMapping("/map")
-	public String showContact() {
+	public String map(Model model) {
+		model.addAttribute("markers", markerRepository.findAll());
 				
 		return "map";
 	}
 
+	@RequestMapping("/markers")
+	@ResponseBody
+	public String markers() throws JsonProcessingException {
+		List<Marker> markers = markerRepository.findAll();
+		System.out.println(objectMapper.writeValueAsString(markers));
+		return objectMapper.writeValueAsString(markers);
+	}
 
 	//ADDMAP
 	@GetMapping("/map/add")
