@@ -22,21 +22,19 @@ import java.time.ZoneOffset;
 @Controller
 public class IdController {
 
-    private final IdRepository mushroomRepository;
+    private final IdRepository idRepository;
     private final MushroomIdAddService mushroomIdAddService;
     private final MushroomIdService mushroomIdService;
 
-
-
-    public IdController(IdRepository mushroomRepository, MushroomIdAddService mushroomIdAddService, MushroomIdService mushroomIdService) {
-        this.mushroomRepository = mushroomRepository;
+    public IdController(IdRepository idRepository, MushroomIdAddService mushroomIdAddService, MushroomIdService mushroomIdService) {
+        this.idRepository = idRepository;
         this.mushroomIdAddService = mushroomIdAddService;
         this.mushroomIdService = mushroomIdService;
     }
 
     @GetMapping("/mushroomIds")
     public String list(Model model) {
-        model.addAttribute("mushroomIds", mushroomRepository.findAll());
+        model.addAttribute("mushroomIds", idRepository.findAll());
         return "mushroomIds/idRequests";
     }
 
@@ -70,7 +68,7 @@ public class IdController {
         }
         mushroomId.setDate(LocalDateTime.now(ZoneOffset.UTC));
         mushroomId.setStatus(0);
-        mushroomRepository.save(mushroomId);
+        idRepository.save(mushroomId);
         return "redirect:/mushroomIds";
     }
 

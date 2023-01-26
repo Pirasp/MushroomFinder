@@ -5,27 +5,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "mushroom_lexicon")
-public class Mushroom {
-
+@Table(name="mushroomspots")
+public class MushroomSpot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "name", nullable = false)
     @JsonProperty
-    private String name;
-
     @Lob
     @Column(name = "picture")
-    @JsonProperty
     private byte[] picture;
 
-    @Column(name = "description")
+    @JsonProperty
+    private String name;
     @JsonProperty
     private String description;
+    @JsonProperty
+    private double latitude;
+    @JsonProperty
+    private double longitude;
 
-    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -42,14 +40,6 @@ public class Mushroom {
         this.name = name;
     }
 
-    public byte[] getPicture() {
-        return picture;
-    }
-
-    public void setPicture(byte[] picture){
-        this.picture = picture;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -57,5 +47,28 @@ public class Mushroom {
     public void setDescription(String description) {
         this.description = description;
     }
-}
 
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(byte[] picture){
+        this.picture = picture;
+    }
+}

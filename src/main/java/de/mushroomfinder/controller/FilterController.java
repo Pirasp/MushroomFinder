@@ -189,8 +189,6 @@ public class FilterController {
 		for(int i = 0; i< this.filteredMarkers.size(); i++) {
 			Marker marker = new Marker();
 			marker.setId(this.filteredMarkers.get(i).getId());
-			marker.setDescription(this.filteredMarkers.get(i).getDescription());
-			marker.setIdmushroom(this.filteredMarkers.get(i).getMushroom().getId().intValue());
 			marker.setLatitude(this.filteredMarkers.get(i).getLatitude());
 			marker.setLongitude(this.filteredMarkers.get(i).getLongitude());
 			markers.add(marker);

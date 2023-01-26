@@ -7,7 +7,7 @@
 <body>
 <h1>Edit Lexicon Entry</h1>
 
-<form th:object="${mushroom}" th:action="@{/mushrooms/edit/{id}(id=${mushroom.id})}" method="post">
+<form th:object="${mushroom}" th:action="@{/mushrooms/edit/{id}(id=${mushroom.id})}" method="post" enctype="multipart/form-data">
     <table>
         <tr>
             <td>Name:</td>
@@ -19,7 +19,7 @@
         </tr>
         <tr>
             <td>Picture:</td>
-            <td><input type="file" th:field="*{picture}"/></td>
+            <td><input type="file" name="picture" accept="image/png, image/jpeg"/> Max 60KB!</td>
         </tr>
         <tr>
             <td><input type="submit" value="Save"></td>

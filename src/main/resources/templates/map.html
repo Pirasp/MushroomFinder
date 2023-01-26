@@ -14,6 +14,7 @@
 <tr>
     <th><a href="/lexicon">Lexicon</a> </th>
     <th> <a href="/mushroomIds">Mushroom Ids</a></th>
+    <th><a href="/map/add">Add Spot</a></th>
 </tr>
 <div id="map" class="map" style= "width: 100%; height: 700px" ></div>
 <script>
@@ -42,7 +43,8 @@
                 var lonLat = [marker.longitude, marker.latitude];
                 var point = new ol.geom.Point(ol.proj.fromLonLat(lonLat)); // Create a point feature
                 var feature = new ol.Feature({
-                    geometry: point
+                    geometry: point,
+                    id: marker.id
                 });
                 vectorSource.addFeature(feature); // Add the feature to the vector source
             }
@@ -51,7 +53,7 @@
                     anchor: [0.5, 0.5],
                     anchorXUnits: 'fraction',
                     anchorYUnits: 'fraction',
-                    src: 'marker.png'
+                    src: '../marker.png'
                 }))
             });
             var vectorLayer = new ol.layer.Vector({
@@ -59,6 +61,17 @@
                 style: markerStyle
             });
             map.addLayer(vectorLayer); // Add the vector layer to the map
+
+            // Add a click event listener to the vector layer
+            vectorLayer.on("click", function(event) {
+                // Get the feature that was clicked
+                var feature = event.feature;
+                // Get the id of the mushroom associated with the feature
+                var mushroomId = feature.get("id");
+                // Redirect the user to the mushroom page
+                window.location.href = "/spots/edit/" + mushroomId;
+            });
+
         });
 </script>
 </body>
