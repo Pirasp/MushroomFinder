@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MushroomFinder</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch,requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="https://openlayers.org/en/v6.5.0/build/ol.js"></script>
+    <link rel="stylesheet" href="https://openlayers.org/en/v6.5.0/css/ol.css" type="text/css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <th><a href="/spots">Spots</a>
+            <div id="map" class="map" style= "height: 512px" ></div>
+            <script>
+                var map = new ol.Map({
+                    target: 'map',
+                    layers: [
+                        new ol.layer.Tile({
+                            source: new ol.source.OSM()
+                        }),
+                        new ol.layer.Vector({
+                            source: new ol.source.Vector()
+                        })
+                    ],
+                    view: new ol.View({
+                        center: ol.proj.fromLonLat([11.57, 48.13]),
+                        zoom: 4
+                    })
+                });
+
+                var markerSource = map.getLayers().getArray()[1].getSource();
+                var marker;
+                map.on('click', function(event) {
+                    var coordinates = event.coordinate;
+                    if (!marker) {
+                        marker = new ol.Feature({
+                            geometry: new ol.geom.Point(coordinates),
+                            name: 'Marker'
+                        });
+                        var style = new ol.style.Style({
+                            image: new ol.style.Icon({
+                                src: 'marker.png'
+                            })
+                        });
+                        marker.setStyle(style);
+                        markerSource.addFeature(marker);
+                    } else {
+                        marker.getGeometry().setCoordinates(coordinates);
+                    }
+                    var lonlat = ol.proj.toLonLat(coordinates);
+                    var lon = lonlat[0];
+                    var lat = lonlat[1];
+                    document.getElementById("latitude").value = lat;
+                    document.getElementById("longitude").value = lon;
+                    var data = new FormData();
+                    data.append("longitude", lon);
+                    data.append("latitude", lat);
+                    fetch("/addmap", {
+                        method: "POST",
+                        body: data
+                    })
+                    .then(response => response.json());
+                    //alert(marker.getGeometry().getCoordinates());
+                });
+            </script>
+        </div>
+    </div>
+</div>
+        <!--<div class="col-md-4">-->
+<!--<form action="/addmap" enctype="multipart/form-data" method="post">
+    <div class="form-group">
+        <label for="id">UserID:</label>
+        <input type="text" class="form-control" id="id" value="">
+    </div>
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="String" class="form-control" id="name">
+    </div>
+    <div class="form-group">
+        <label for="picture">Picture:</label>
+        <input type="file" class="form-control" id="picture" accept="image/png, image/jpeg">
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <input type="text" class="form-control" id="description">
+    </div>
+    <div class="form-group">
+        <label for="latitude">Latitude:</label>
+        <input type="text" class="form-control" id="latitude" value="10">
+    </div>
+    <div class="form-group">
+        <label for="longitude">Latitude:</label>
+        <input type="text" class="form-control" id="longitude" value="30">
+    </div>
+    <div>
+        <input class="btn btn-primary" type="submit" value="Submit">
+    </div>
+</form>-->
+<form action="#" th:action="@{/addmap}" th:object="${spot}" method=post enctype="multipart/form-data" >
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td><input type="text" th:field="*{name}"/></td>
+        </tr>
+        <tr>
+            <td>Picture:</td>
+            <td><input type="file" name="picture" accept="image/png, image/jpeg"/> Max 60KB!</td>
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td><input type="text" th:field="*{description}"/></td>
+        </tr>
+        <tr>
+            <td>Latitude:</td>
+            <td><input type="text" th:field="*{latitude}" id="latitude"/></td>
+        </tr>
+        <tr>
+            <td>Longitude:</td>
+            <td><input type="text" th:field="*{longitude}" id="longitude"/></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Save"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
