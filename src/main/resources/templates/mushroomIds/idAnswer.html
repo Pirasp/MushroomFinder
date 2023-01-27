@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <title>Mushroom Finder: Id list</title>
+</head>
+<body>
+<div th:insert="layout/navbar::navbar">
+</div>
+
+<h2>Solve ID Request</h2>
+
+<img th:src="@{/mushroomIds/picture/{pid}(pid=${id})}" alt="mushroom image" width="250" height="250">
+
+<form action="#" method="post" th:object="${mushroomId}" th:action="@{/mushroomIds/solve/save}">
+    <input type="hidden" th:field="*{solverid}"/>
+    <label>MushroomId:</label>
+    <input type="text" th:field="*{mushroomid}"/>
+    <br>
+    <input type="submit" value="Save"/>
+</form>
+<a href="/mushroomIds">Back</a>
+
+</body>
+</html>
