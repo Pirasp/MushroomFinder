@@ -1,11 +1,13 @@
 package de.mushroomfinder.controller;
 
+import de.mushroomfinder.entities.Comment;
 import de.mushroomfinder.repository.MushroomSpotRepository;
 import de.mushroomfinder.service.SpotService;
 import net.bytebuddy.matcher.StringMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class SpotController {
@@ -48,6 +51,12 @@ public class SpotController {
         return spot.getPicture();
     }
 
+    @GetMapping("/spots/{id}")
+    public ModelAndView getShowSpot(@PathVariable Long id) throws IllegalArgumentException{
+        Spot spot = mushroomSpotRepository.searchById(id);
+        return new ModelAndView("showSpotEntry", "spot", spot);
+    }
+
     @GetMapping("/spots/edit/{id}")
     public ModelAndView getEditSpot(@PathVariable Long id) throws IllegalArgumentException{
         Spot spot = mushroomSpotRepository.searchById(id);
@@ -72,6 +81,15 @@ public class SpotController {
         spot.setId(id);
         mushroomSpotRepository.save(spot);
         return "redirect:/spots?searchTerm="+spot.getName();
+    }
+
+    @GetMapping("/spots/delete/{id}")
+    public String deleteSpot(@PathVariable("id") Long id, Model model) {
+        Optional<Spot> optSpot = mushroomSpotRepository.findById(id);
+        Spot spot = mushroomSpotRepository.searchById(id);
+
+        mushroomSpotRepository.delete(spot);
+        return "redirect:/spots";
     }
 
     @InitBinder

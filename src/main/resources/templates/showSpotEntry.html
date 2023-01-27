@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Mushroom Finder: Spots</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <h1>Show Spot Entry</h1>
+      <form th:object="${spot}" th:action="@{/spots/{id}(id=${spot.id})}" method="get" enctype="multipart/form-data">
+        <table class="table table-bordered">
+          <tr>
+            <td>Name:</td>
+            <td class="form-control" th:text="${spot.name}" readonly>
+          </tr>
+          <tr>
+            <td>Description:</td>
+            <td class="form-control" th:text="${spot.description}" readonly>
+          </tr>
+          <tr>
+            <td>Picture:</td>
+            <td><img th:src="@{/spots/picture/{id}(id=${spot.id})}" alt="no picture available" width="100" height="100"></td>
+          </tr>
+          <tr>
+            <td>Longitude:</td>
+            <td class="form-control" th:text="${spot.longitude}" readonly>
+          </tr>
+          <tr>
+            <td>Latitude:</td>
+            <td class="form-control" th:text="${spot.latitude}" readonly>
+          </tr>
+        </table>
+        </form>
+    </div>
+  </div>
+</div>

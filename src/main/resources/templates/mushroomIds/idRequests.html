@@ -2,12 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <title>Mushroom Finder: Id list</title>
+    <div th:replace="layout/navbar::head"></div>
 </head>
 <body>
-<div th:insert="layout/navbar::navbar">
-</div>
+<div th:insert="layout/navbar::navbar"></div>
 <a href="/mushroomIds/add">New Id-Request</a>
 <table>
     <tr>
@@ -16,8 +15,8 @@
         <th>Picture</th>
         <th>Location</th>
         <th>Description</th>
-        <th>MushroomID</th>
-        <th>SolverID</th>
+        <th>Status</th>
+        <th>Mushroom ID</th>
     </tr>
     <tr th:each="mushroom : ${mushroomIds}">
         <td th:text="${mushroom.id}"></td>
@@ -27,7 +26,6 @@
         <td th:text="${mushroom.description}"></td>
         <td th:text="${mushroom.mushroomid}"></td>
         <td th:text="${mushroom.solverid}"></td>
-        <td><a th:href="@{/mushroomIds/solve/{id}(id=${mushroom.id})}">Solve Request</a></td>
     </tr>
 </table>
 </body>
