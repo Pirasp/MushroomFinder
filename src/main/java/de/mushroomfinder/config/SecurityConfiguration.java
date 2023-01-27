@@ -41,7 +41,7 @@ public class SecurityConfiguration {
 	 
 	    @Bean
 	    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-	        http.authorizeRequests().antMatchers("/login", "/map", "/register", "/api/**", "/markers", "/spots", "/marker.png").permitAll()
+	        http.authorizeRequests().antMatchers("/login", "/map", "/register/**", "/registrationConfirm/**", "/api/**", "/markers", "/spots", "/marker.png").permitAll()
 	        	.antMatchers("/user/**").hasAuthority("ADMIN")
 	        	.anyRequest().authenticated()
 	            .and()
