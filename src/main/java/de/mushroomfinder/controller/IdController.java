@@ -97,13 +97,20 @@ public class IdController {
         return "mushroomIds/idAnswer";
     }
 
-    @PostMapping("/mushroomIds/solve/save")
+    @PostMapping("/mushroomIds/solve/{id}")
     public String saveMushroomId(@ModelAttribute MushroomId mushroomId,
                                  Principal principal) {
 
         Optional<User> oLoggedUser = userRepository.findUserByLogin(principal.getName());
         if(oLoggedUser.isPresent()) {
             mushroomId.setSolverid(oLoggedUser.get().getId());
+        }
+
+        MushroomId existingMushroomId = idRepository.findById(mushroomId.getId()).orElse(null);
+        mushroomId.setUserId(existingMushroomId.getUserId());
+        mushroomId.setLocation(existingMushroomId.getLocation());
+        if(existingMushroomId != null) {
+            mushroomId.setPicture(existingMushroomId.getPicture());
         }
 
         idRepository.save(mushroomId);

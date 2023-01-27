@@ -94,6 +94,12 @@ public class MushroomController {
             return "redirect:/lexicon/add/errorPictureSize";
         }
         mushroom.setId(id);
+        if(mushroom.getPicture() != null){
+            Mushroom existingMushroom = lexiconRepository.findById(mushroom.getId()).orElse(null);
+            if(existingMushroom != null){
+                mushroom.setPicture(existingMushroom.getPicture());
+            }
+        }
         lexiconRepository.save(mushroom);
         return "redirect:/lexicon?searchTerm="+mushroom.getName();
     }

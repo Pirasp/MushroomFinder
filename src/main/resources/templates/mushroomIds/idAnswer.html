@@ -13,7 +13,7 @@
 
 <img th:src="@{/mushroomIds/picture/{pid}(pid=${id})}" alt="mushroom image" width="250" height="250">
 
-<form action="#" method="post" th:object="${mushroomId}" th:action="@{/mushroomIds/solve/save}">
+<form action="#" method="post" th:object="${mushroomId}" th:action="@{/mushroomIds/solve/{id}(id=${mushroomId.id})}">
     <input type="hidden" th:field="*{solverid}"/>
     <label>MushroomId:</label>
     <input type="text" th:field="*{mushroomid}"/>
