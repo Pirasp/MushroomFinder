@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 public interface SpotVisitorRepository extends JpaRepository<SpotVisitor, Long> {
     /*SpotVisitor findFirstByIdOrderByDateDesc(SpotVisitor spotVisitor);*/
     @Query("select sv from SpotVisitor sv where sv.spot.id = :idspot order by sv.date desc")
-    SpotVisitor findFirstByIdspotOrderByDateDesc(@Param("idspot") Long idspot);
+    SpotVisitor findFirstByidspotOrderByDateDesc(@Param("idspot") Long idspot);
     Long countById(@Param("idspot") Long id);
     SpotVisitor searchById(@Param("idspot") Long id);
 

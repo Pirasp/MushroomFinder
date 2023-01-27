@@ -1,5 +1,7 @@
 package de.mushroomfinder.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +19,8 @@ public class CommentVote {
 	private Long id;
 	
 	private Integer vote;
-	
+
+	@JsonIgnore
 	 @ManyToOne
 	 @JoinColumn(name="commentid")
 	 private Comment comment;

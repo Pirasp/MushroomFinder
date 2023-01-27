@@ -1,9 +1,13 @@
 package de.mushroomfinder.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.mushroomfinder.entities.Spot;
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import de.mushroomfinder.repository.SpotVisitorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
@@ -16,12 +20,16 @@ public class SpotVisitor {
 
     @ManyToOne
     @JoinColumn(name="idspot")
+    @JsonIgnore
     private Spot spot;
 
+    @JsonProperty
     @Column(name = "date")
-    private LocalDateTime date;
-    @Column(name = "visitorName")
-    private String visitorName;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    LocalDate date;
+    @JsonProperty
+    @Column(name = "visitorname")
+    private String visitorname;
 
 
     public Long getId() {
@@ -36,22 +44,22 @@ public class SpotVisitor {
         return spot;
     }
 
-    public String getVisitorName() {
-        return visitorName;
+    public String getVisitorname() {
+        return visitorname;
     }
 
-    public void setVisitorName(String visitorName) {
-        this.visitorName = visitorName;
+    public void setVisitorname(String visitorname) {
+        this.visitorname = visitorname;
     }
 
     public void setSpot(Spot spot) {
         this.spot = spot;
     }
 
-    public void setDate(LocalDateTime date){
+    public void setDate(LocalDate date){
         this.date = date;
     }
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
