@@ -21,7 +21,7 @@
             <td class="form-control" th:field="*{date}" th:value="${T(java.time.LocalDateTime).now()}" readonly>
           </tr>-->
         </table>
-<!--        <input type="hidden" name="id" th:value="${spot.id}"/>-->
+        <input type="hidden" name="id" th:field="*{spot.id}"/>
         <input type="submit" value="Submit" class="btn btn-primary"/>
       </form>
     </div>
