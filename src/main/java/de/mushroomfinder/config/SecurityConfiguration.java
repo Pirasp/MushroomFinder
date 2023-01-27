@@ -41,16 +41,13 @@ public class SecurityConfiguration {
 	 
 	    @Bean
 	    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-	        http.authorizeRequests()
-
-	        	
-
+	        http.authorizeRequests().antMatchers("/login", "/map", "/register", "/api/**", "/markers", "/spots/**").permitAll()
 	        	.antMatchers("/user/**").hasAuthority("ADMIN")
 	        	.anyRequest().authenticated()
 	            .and()
 	            .formLogin()
 	                .usernameParameter("email")
-	                .defaultSuccessUrl("/setSession")
+	                .defaultSuccessUrl("/setSession", true)
 	                .permitAll()
 	            .and()
 	            .logout().logoutSuccessUrl("/").permitAll();
