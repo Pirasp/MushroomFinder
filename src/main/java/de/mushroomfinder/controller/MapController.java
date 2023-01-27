@@ -53,12 +53,11 @@ public class MapController {
 
 	//ADDMAP -----------------------------------------------------------------------------------------------------------
 	@GetMapping("/map/add")
-	public String addmap(Model model/*, @RequestParam("id") Long id*/) {
-		/*model.addAttribute("mushroomspot", mushroomSpotRepository.findById(id));*/
+	public String addmap(Model model) {
 		model.addAttribute("spot", new Spot());
 		return "addmap";
 	}
-	/*lang long from marker and id from user*/
+
 	@PostMapping("/map/add")
 	public String addMarker(@ModelAttribute Spot spot,
 							@RequestParam("name") String name,
