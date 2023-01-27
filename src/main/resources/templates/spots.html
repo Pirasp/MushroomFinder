@@ -43,8 +43,9 @@
           <td>
             <a th:href="@{/spots/edit/{id}(id=${spot.id})}" class="btn btn-primary">Edit</a>
             <a th:href="@{/spots/{id}(id=${spot.id})}" class="btn btn-primary">Details</a>
-            <a th:href="@{/spots/visitor/add/{id}(id=${spot.id})}" class="btn btn-secondary">Visited?</a>
+            <a th:href="@{/spots/visitor/add/{id}(id=${spot.id})}" class="btn btn-info">Visited?</a>
 			<a th:href="@{/comments/{id}(id=${spot.id})}" class="btn btn-primary">View Comments</a>
+            <a th:href="@{/spots/delete/{id}(id=${spot.id})}" class="btn btn-danger">Delete</a>
           </td>
         </tr>
         </tbody>

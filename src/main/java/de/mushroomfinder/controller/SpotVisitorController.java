@@ -51,8 +51,9 @@ public class SpotVisitorController {
     }
 
     @PostMapping("/spots/visitor/add")
-    public String addVisitor(@ModelAttribute ("spotVisitor") SpotVisitor spotVisitor, @RequestParam String visitorname, Model model){
+    public String addVisitor(@ModelAttribute ("spotvisitor") SpotVisitor spotVisitor, @RequestParam String visitorname, Model model){
         Optional<Spot> spotOpt = spotRepository.findById(spotVisitor.getSpot().getId());
+        System.out.println(spotOpt);
         spotVisitor.setSpot(spotOpt.get());
         spotVisitor.setDate(LocalDate.now());
         spotVisitor.setVisitorname(visitorname);
