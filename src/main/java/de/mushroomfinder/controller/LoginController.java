@@ -99,6 +99,8 @@ public class LoginController {
 		  List<Authority> authorities = new ArrayList<>();
 		  authorities.add(authority);
 		  user.setMyauthorities(authorities);
+		  //Set user inactive before registration has been confirmed
+		  user.setActive(0);
 		  //save User		  
 		  userRepository.save(user);
 		  System.out.println("AppUrl: " + request.getContextPath());
